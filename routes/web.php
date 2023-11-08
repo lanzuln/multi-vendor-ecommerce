@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\VendorController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -12,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 | routes are loaded by the RouteServiceProvider and all of them will
 | be assigned to the "web" middleware group. Make something great!
 |
-*/
+ */
 
 Route::get('/', function () {
     return view('welcome');
@@ -22,10 +24,27 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+// ========= admin
+Route::get('/admin/login', [AdminController::class, 'adminLogin']);
+
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::controller(AdminController::class)->group(function () {
+        Route::get('/admin/dashboard', 'dashboard');
+        route::get('/admin/logout', 'adminLogout')->name('admin.logout');
+
+        // profile
+        route::get('/admin/profile', 'adminProfile')->name('admin.profile');
+        route::post('/admin/profile/update', 'adminProfileUpdate')->name('admin.profile.update');
+        // password
+        route::get('/admin/password', 'adminPassword')->name('admin.password');
+        route::post('/admin/password/update', 'adminPasswordUpdate')->name('admin.password.update');
+    });
 });
 
-require __DIR__.'/auth.php';
+Route::middleware(['auth', 'role:vendor'])->group(function () {
+    Route::get('/vendor/dashboard', [VendorController::class, 'dashboard']);
+});
+
+
+
+require __DIR__ . '/auth.php';
