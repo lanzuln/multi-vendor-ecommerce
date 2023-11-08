@@ -30,12 +30,16 @@
                 <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-3">
                     <div class="col mx-auto">
                         <div class="mb-4 text-center">
-                            <img src="{{ asset('backendAdmin/assets/images/logo-img.png') }}" width="180"
+                            <img src="{{ asset('backendAdmin/assets/images/site-logo.svg') }}" width="180"
                                 alt="" />
                         </div>
                         <div class="card">
                             <div class="card-body">
                                 <div class="border p-4 rounded">
+                                    <div class="text-center">
+										<h3 class="">Admin Sign in</h3>
+
+									</div>
                                     <div class="form-body">
                                         <form class="row g-3" method="POST" action="{{ route('login') }}">
                                             @csrf
