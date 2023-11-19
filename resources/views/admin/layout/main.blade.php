@@ -20,6 +20,8 @@
     <link href="{{ asset('backendAdmin/assets/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('backendAdmin/assets/css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('backendAdmin/assets/css/icons.css') }}" rel="stylesheet">
+    <link href="{{ asset('backendAdmin/assets/plugins/datatable/css/dataTables.bootstrap5.min.css') }}"
+        rel="stylesheet" />
     <!-- Theme Style CSS -->
     <link rel="stylesheet" href="{{ asset('backendAdmin/assets/css/dark-theme.css') }}" />
     <link rel="stylesheet" href="{{ asset('backendAdmin/assets/css/semi-dark.css') }}" />
@@ -74,13 +76,48 @@
     <script src="{{ asset('backendAdmin/assets/plugins/sparkline-charts/jquery.sparkline.min.js') }}"></script>
     <script src="{{ asset('backendAdmin/assets/plugins/jquery-knob/excanvas.js') }}"></script>
     <script src="{{ asset('backendAdmin/assets/plugins/jquery-knob/jquery.knob.js') }}"></script>
+    <script src="{{ asset('backendAdmin/assets/plugins/datatable/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('backendAdmin/assets/js/validate.min.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script>
         $(function() {
             $(".knob").knob();
         });
+        $(document).ready(function() {
+            $('#dataTable').DataTable();
+        });
+        $(function() {
+            $(document).on('click', '#delete', function(e) {
+                e.preventDefault();
+                var link = $(this).attr("href");
+
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "Delete This Data?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = link
+                        Swal.fire(
+                            'Deleted!',
+                            'Your file has been deleted.',
+                            'success'
+                        )
+                    }
+                })
+
+
+            });
+
+        });
     </script>
-    <script src="{{ asset('backendAdmin/assets/js/index.js') }}"></script>
     <!--app JS-->
+    <script src="{{ asset('backendAdmin/assets/js/index.js') }}"></script>
     <script src="{{ asset('backendAdmin/assets/js/app.js') }}"></script>
 </body>
 

@@ -16,6 +16,7 @@
     <!-- Template CSS -->
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/plugins/animate.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/main.css') }}?v=5.3" />
+    <link rel="stylesheet" href="{{ asset('backendAdmin/assets/css/custome.css') }}" />
 </head>
 
 <body>
