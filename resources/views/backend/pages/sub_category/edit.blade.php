@@ -29,7 +29,7 @@
                         <div class="col-sm-10 text-secondary">
                             <div class="form-group">
                                 <select class="form-select mb-3" aria-label="Default select example" name="category_id">
-                                    <option>Select category</option>
+
 
                                     @foreach ($allCategory as $option)
                                         <option value="{{ $option->id }}"

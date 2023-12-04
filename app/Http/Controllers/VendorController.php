@@ -19,6 +19,36 @@ class VendorController extends Controller
         return view('vendor.auth.login');
 
     }
+
+    public function become_vendor(){
+        return view('auth.become_vendor');
+    }
+    public function vendorRegister(Request $request)
+    {
+        $request->validate([
+            'shop_name' => ['required', 'string', 'max:100'],
+            'user_name' => ['required', 'string', 'max:100'],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'phone' => ['required', 'max:25'],
+            'join_at' => ['required', 'string', 'max:100'],
+            'password' => ['required', 'confirmed'],
+        ]);
+
+        $user = User::create([
+            'name' => $request->shop_name,
+            'username' => $request->user_name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'join_date' => $request->join_at,
+            'password' => Hash::make($request->password),
+            'role' => 'vendor',
+            'status' => 'inactive',
+        ]);
+
+
+        toastr()->success('Vendor registration successfull');
+        return redirect()->route('vendor.login');
+    }
     public function vendorLogout(Request $request): RedirectResponse {
         Auth::guard('web')->logout();
 

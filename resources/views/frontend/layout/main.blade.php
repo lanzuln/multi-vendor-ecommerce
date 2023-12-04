@@ -16,7 +16,7 @@
     <!-- Template CSS -->
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/plugins/animate.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/main.css') }}?v=5.3" />
-    <link rel="stylesheet" href="{{ asset('backendAdmin/assets/css/custome.css') }}" />
+    <link rel="stylesheet" href="{{ asset('frontend/assets/css/custome.css') }}" />
 </head>
 
 <body>
@@ -150,9 +150,11 @@
     </main>
 
 
-  @include('frontend.body.footer')
+    @include('frontend.body.footer')
+
+
     <!-- Preloader Start -->
-    <div id="preloader-active">
+    {{-- <div id="preloader-active">
         <div class="preloader d-flex align-items-center justify-content-center">
             <div class="preloader-inner position-relative">
                 <div class="text-center">
@@ -160,7 +162,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
     <!-- Vendor JS-->
     <script src="{{ asset('frontend/assets/js/vendor/modernizr-3.6.0.min.js') }}"></script>
     <script src="{{ asset('frontend/assets/js/vendor/jquery-3.6.0.min.js') }}"></script>

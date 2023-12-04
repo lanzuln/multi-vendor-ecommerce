@@ -43,9 +43,10 @@ class SubCategoryController extends Controller {
     public function update(Request $request) {
         $category_Id = $request->category_id;
 
-            SubCategory::where('id', $category_Id)->update([
+            SubCategory::where('id',$category_Id)->update([
                 'name' => $request->sub_category_name,
-                'slug' => strtolower(str_replace(' ', '-', $request->sub_category_name))
+                'slug' => strtolower(str_replace(' ', '-', $request->sub_category_name)),
+                'category_id' => $request->category_id,
             ]);
 
         toastr()->success('Sub Category updated');
@@ -53,12 +54,9 @@ class SubCategoryController extends Controller {
     }
 
     public function delete($id) {
-        $category = SubCategory::find($id);
-        $old_image = $category->category_image;
-        unlink($old_image);
         SubCategory::where('id', $id)->delete();
 
-        toastr()->success('Category deleted');
+        toastr()->success('Sub Category deleted');
         return back();
     }
 }

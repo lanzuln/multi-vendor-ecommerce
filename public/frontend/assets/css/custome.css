@@ -1,3 +1,6 @@
 img.image_fit{
     object-fit: cover;
 }
+.vendor_registration .form-group select.form-select.mb-3 {
+    border: 1px solid #ececec !important;
+}

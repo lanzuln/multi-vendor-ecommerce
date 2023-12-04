@@ -1,12 +1,12 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\VendorController;
-use App\Http\Controllers\backend\SubCategoryController;
 use App\Http\Controllers\backend\BrandController;
 use App\Http\Controllers\backend\CategoryController;
+use App\Http\Controllers\backend\SubCategoryController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\VendorController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,51 +41,63 @@ Route::get('/admin/login', [AdminController::class, 'adminLogin']);
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::controller(AdminController::class)->group(function () {
-        Route::get('/admin/dashboard', 'dashboard');
+        Route::get('/admin/dashboard', 'dashboard')->name('admin.dashboard');
         route::get('/admin/logout', 'adminLogout')->name('admin.logout');
 
         // profile
         route::get('/admin/profile', 'adminProfile')->name('admin.profile');
         route::post('/admin/profile/update', 'adminProfileUpdate')->name('admin.profile.update');
+
         // password
         route::get('/admin/password', 'adminPassword')->name('admin.password');
         route::post('/admin/password/update', 'adminPasswordUpdate')->name('admin.password.update');
 
-        // brand
-        Route::controller(BrandController::class)->group(function () {
-             Route::get('all/brand', 'allBrand')->name('all.brand');
-             Route::get('create/brand', 'createBrand')->name('create.brand');
-             Route::post('store/brand', 'storeBrand')->name('store.brand');
-             Route::get('edit/brand/{id}', 'editBrand')->name('edit.brand');
-             Route::post('update/brand', 'updateBrand')->name('update.brand');
-             Route::get('delete/brand/{id}', 'deleteBrand')->name('delete.brand');
-        });
-         // Category
-         Route::controller(CategoryController::class)->group(function () {
-            Route::get('all/category', 'index')->name('all.category');
-            Route::get('create/category', 'create')->name('create.category');
-            Route::post('store/category', 'store')->name('store.category');
-            Route::get('edit/category/{id}', 'edit')->name('edit.category');
-            Route::post('update/category', 'update')->name('update.category');
-            Route::get('delete/category/{id}', 'delete')->name('delete.category');
-       });
-        // sub Category
-        Route::controller(SubCategoryController::class)->group(function () {
-            Route::get('all/subcategory', 'index')->name('all.subcategory');
-            Route::get('create/subcategory', 'create')->name('create.subcategory');
-            Route::post('store/subcategory', 'store')->name('store.subcategory');
-            Route::get('edit/subcategory/{id}', 'edit')->name('edit.subcategory');
-            Route::post('update/subcategory', 'update')->name('update.subcategory');
-            Route::get('delete/subcategory/{id}', 'delete')->name('delete.subcategory');
-       });
+        // vendor management
+        Route::get('inactive/vendor', 'inactiveVendor')->name('inactive.vendor');
+        Route::get('inactive/vendor/details/{id}', 'inactiveVendorDetails')->name('inactive.vendor.details');
+        Route::post('active/inactive/vendor', 'activeInactiveVendor')->name('active.inactive.vendor');
+
+        Route::get('active/vendor', 'activeVendor')->name('active.vendor');
+        Route::get('active/vendor/details/{id}', 'activeVendorDetails')->name('active.vendor.details');
+        Route::post('/inactive/active/vendor', 'inactiveActiveVendor')->name('inactive.active.vendor');
     });
+    // brand
+    Route::controller(BrandController::class)->group(function () {
+        Route::get('all/brand', 'allBrand')->name('all.brand');
+        Route::get('create/brand', 'createBrand')->name('create.brand');
+        Route::post('store/brand', 'storeBrand')->name('store.brand');
+        Route::get('edit/brand/{id}', 'editBrand')->name('edit.brand');
+        Route::post('update/brand', 'updateBrand')->name('update.brand');
+        Route::get('delete/brand/{id}', 'deleteBrand')->name('delete.brand');
+    });
+    // Category
+    Route::controller(CategoryController::class)->group(function () {
+        Route::get('all/category', 'index')->name('all.category');
+        Route::get('create/category', 'create')->name('create.category');
+        Route::post('store/category', 'store')->name('store.category');
+        Route::get('edit/category/{id}', 'edit')->name('edit.category');
+        Route::post('update/category', 'update')->name('update.category');
+        Route::get('delete/category/{id}', 'delete')->name('delete.category');
+    });
+    // sub Category
+    Route::controller(SubCategoryController::class)->group(function () {
+        Route::get('all/subcategory', 'index')->name('all.subcategory');
+        Route::get('create/subcategory', 'create')->name('create.subcategory');
+        Route::post('store/subcategory', 'store')->name('store.subcategory');
+        Route::get('edit/subcategory/{id}', 'edit')->name('edit.subcategory');
+        Route::post('update/subcategory', 'update')->name('update.subcategory');
+        Route::get('delete/subcategory/{id}', 'delete')->name('delete.subcategory');
+    });
+
 });
 
 // ======vendor
-Route::get('/vendor/login', [VendorController::class, 'vendorLogin']);
+Route::get('/vendor/login', [VendorController::class, 'vendorLogin'])->name('vendor.login');
+Route::get('/become/vendor', [VendorController::class, 'become_vendor'])->name('become_vendor');
+Route::post('/vendor/register', [VendorController::class, 'vendorRegister'])->name('vendorRegister');
 Route::middleware(['auth', 'role:vendor'])->group(function () {
     Route::controller(VendorController::class)->group(function () {
-        Route::get('/vendor/dashboard', 'dashboard');
+        Route::get('/vendor/dashboard', 'dashboard')->name('vendor.dashobard');
         route::get('/vendor/logout', 'vendorLogout')->name('vendor.logout');
 
         // profile

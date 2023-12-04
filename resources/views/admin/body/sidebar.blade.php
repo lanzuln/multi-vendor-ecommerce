@@ -18,7 +18,7 @@
                 <div class="menu-title">Dashboard</div>
             </a>
             <ul>
-                <li> <a href="index.html"><i class="bx bx-right-arrow-alt"></i>Default</a>
+                <li> <a href="{{route('admin.dashboard')}}"><i class="bx bx-right-arrow-alt"></i>Default</a>
                 </li>
             </ul>
         </li>
@@ -56,6 +56,20 @@
             <ul>
                 <li> <a href="{{route('all.subcategory')}}"><i class="bx bx-right-arrow-alt"></i>All category</a></li>
                 <li> <a href="{{route('create.subcategory')}}"><i class="bx bx-right-arrow-alt"></i>Add category</a></li>
+            </ul>
+        </li>
+         {{--  --}}
+         <li class="menu-label">Vendor management</li>
+
+         <li>
+            <a href="javascript:;" class="has-arrow">
+                <div class="parent-icon"><i class="bx bx-category"></i>
+                </div>
+                <div class="menu-title">Vendor management</div>
+            </a>
+            <ul>
+                <li> <a href="{{route('inactive.vendor')}}"><i class="bx bx-right-arrow-alt"></i>Inactive vendor</a></li>
+                <li> <a href="{{route('active.vendor')}}"><i class="bx bx-right-arrow-alt"></i>Active vendor</a></li>
             </ul>
         </li>
         <li class="menu-label">UI Elements</li>

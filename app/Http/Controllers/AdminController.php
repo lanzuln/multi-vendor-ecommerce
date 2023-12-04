@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use toastr;
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Http\RedirectResponse;
+use toastr;
 
 class AdminController extends Controller {
-    public function dashboard() {
-        return view('admin.index');
-    }
     public function adminLogin() {
         return view('admin.auth.login');
 
+    }
+    public function dashboard() {
+        return view('admin.index');
     }
     public function adminLogout(Request $request): RedirectResponse {
         Auth::guard('web')->logout();
@@ -72,7 +72,7 @@ class AdminController extends Controller {
         return view('admin.pages.profile.password');
     }
 
-    public function adminPasswordUpdate(Request $request){
+    public function adminPasswordUpdate(Request $request) {
         $request->validate([
             'old_password' => 'required',
             'new_password' => 'required|confirmed',
@@ -85,7 +85,7 @@ class AdminController extends Controller {
 
         // Update The new password
         User::where('id', auth()->user()->id)->update([
-            'password' => Hash::make($request->new_password)
+            'password' => Hash::make($request->new_password),
 
         ]);
 
@@ -93,5 +93,47 @@ class AdminController extends Controller {
         return back();
     }
 
+    // =========inactive vendor
+    public function inactiveVendor() {
+        $inactive = User::where('role', 'vendor')
+            ->where('status', 'inactive')->latest()->get();
+        return view('backend.pages.vendor-manage.inactive', compact('inactive'));
     }
 
+    public function inactiveVendorDetails($id) {
+        $inactiveDetails = User::findOrFail($id);
+        return view('backend.pages.vendor-manage.inactiveDetails', compact('inactiveDetails'));
+    }
+
+    public function activeInactiveVendor(Request $request) {
+
+        $vendor = $request->id;
+        User::where('id', $vendor)->update([
+            'status' => 'active',
+        ]);
+        toastr()->success('Vendor activated');
+        return redirect('inactive/vendor');
+    }
+
+    // ========= active vendor
+    public function activeVendor() {
+        $active = User::where('role', 'vendor')
+            ->where('status', 'active')->latest()->get();
+        return view('backend.pages.vendor-manage.active', compact('active'));
+    }
+    public function activeVendorDetails($id) {
+        $activeDetails = User::findOrFail($id);
+        return view('backend.pages.vendor-manage.activeDetails', compact('activeDetails'));
+    }
+
+    public function inactiveActiveVendor(Request $request) {
+
+        $vendor = $request->id;
+        User::where('id', $vendor)->update([
+            'status' => 'inactive',
+        ]);
+        toastr()->success('Vendor Inactivated');
+        return redirect('active/vendor');
+    }
+
+}
