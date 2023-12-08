@@ -20,13 +20,15 @@
     <link href="{{ asset('backendAdmin/assets/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('backendAdmin/assets/css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('backendAdmin/assets/css/icons.css') }}" rel="stylesheet">
+    <link href="{{ asset('backendAdmin/assets/plugins/datatable/css/dataTables.bootstrap5.min.css') }}"/>
     <!-- Theme Style CSS -->
     <link rel="stylesheet" href="{{ asset('backendAdmin/assets/css/dark-theme.css') }}" />
     <link rel="stylesheet" href="{{ asset('backendAdmin/assets/css/semi-dark.css') }}" />
     <link rel="stylesheet" href="{{ asset('backendAdmin/assets/css/header-colors.css') }}" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
-        integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+    <link href="{{ asset('backendAdmin/assets/plugins/input-tags/css/tagsinput.css') }}" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('backendAdmin/assets/css/custome.css') }}" />
     <title>Rukada - Responsive Bootstrap 5 Admin Template</title>
 </head>
@@ -74,14 +76,56 @@
     <script src="{{ asset('backendAdmin/assets/plugins/sparkline-charts/jquery.sparkline.min.js') }}"></script>
     <script src="{{ asset('backendAdmin/assets/plugins/jquery-knob/excanvas.js') }}"></script>
     <script src="{{ asset('backendAdmin/assets/plugins/jquery-knob/jquery.knob.js') }}"></script>
+    <script src="{{ asset('backendAdmin/assets/plugins/datatable/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('backendAdmin/assets/js/validate.min.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="{{ asset('backendAdmin/assets/plugins/input-tags/js/tagsinput.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
     <script>
+         $(document).ready(function() {
+            $('#summernote').summernote({
+                placeholder: 'Description here',
+                tabsize: 2,
+                height: 200
+            });
+
+            $('#dataTable').DataTable();
+        });
+
         $(function() {
-            $(".knob").knob();
+            $(document).on('click', '#delete', function(e) {
+                e.preventDefault();
+                var link = $(this).attr("href");
+
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "Delete This Data?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = link
+                        Swal.fire(
+                            'Deleted!',
+                            'Your file has been deleted.',
+                            'success'
+                        )
+                    }
+                })
+
+
+            });
+
         });
     </script>
     <script src="{{ asset('backendAdmin/assets/js/index.js') }}"></script>
     <!--app JS-->
     <script src="{{ asset('backendAdmin/assets/js/app.js') }}"></script>
+    @stack('myScript')
 </body>
 
 </html>

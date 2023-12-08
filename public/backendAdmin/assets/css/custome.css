@@ -1,3 +1,7 @@
 img.image_fit{
     object-fit: cover;
 }
+
+.btn i {
+    display: contents;
+}

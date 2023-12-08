@@ -26,9 +26,12 @@
     <link rel="stylesheet" href="{{ asset('backendAdmin/assets/css/dark-theme.css') }}" />
     <link rel="stylesheet" href="{{ asset('backendAdmin/assets/css/semi-dark.css') }}" />
     <link rel="stylesheet" href="{{ asset('backendAdmin/assets/css/header-colors.css') }}" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
-        integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="{{ asset('backendAdmin/assets/plugins/input-tags/css/tagsinput.css') }}" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"/>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" />
+
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('backendAdmin/assets/css/custome.css') }}" />
     <title>Rukada - Responsive Bootstrap 5 Admin Template</title>
 </head>
@@ -62,10 +65,10 @@
         {{-- end footer  --}}
     </div>
     <!--end wrapper-->
-    <!-- Bootstrap JS -->
     <script src="{{ asset('backendAdmin/assets/js/bootstrap.bundle.min.js') }}"></script>
-    <!--plugins-->
+    <!-- Bootstrap JS -->
     <script src="{{ asset('backendAdmin/assets/js/jquery.min.js') }}"></script>
+    <!--plugins-->
     <script src="{{ asset('backendAdmin/assets/plugins/simplebar/js/simplebar.min.js') }}"></script>
     <script src="{{ asset('backendAdmin/assets/plugins/metismenu/js/metisMenu.min.js') }}"></script>
     <script src="{{ asset('backendAdmin/assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js') }}"></script>
@@ -78,11 +81,26 @@
     <script src="{{ asset('backendAdmin/assets/plugins/jquery-knob/jquery.knob.js') }}"></script>
     <script src="{{ asset('backendAdmin/assets/plugins/datatable/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('backendAdmin/assets/js/validate.min.js') }}"></script>
+    <script src="{{ asset('backendAdmin/assets/plugins/input-tags/js/tagsinput.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+
+
+
+
+    {{-- // <!--app JS--> --}}
+    <script src="{{ asset('backendAdmin/assets/js/index.js') }}"></script>
+
     <script>
-        $(function() {
-            $(".knob").knob();
+        // summernote
+        $(document).ready(function() {
+            $('#summernote').summernote({
+                placeholder: 'Description here',
+                tabsize: 2,
+                height: 200
+            });
         });
+
         $(document).ready(function() {
             $('#dataTable').DataTable();
         });
@@ -116,8 +134,7 @@
 
         });
     </script>
-    <!--app JS-->
-    <script src="{{ asset('backendAdmin/assets/js/index.js') }}"></script>
+    @stack('myScript')
     <script src="{{ asset('backendAdmin/assets/js/app.js') }}"></script>
 </body>
 

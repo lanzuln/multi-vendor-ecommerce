@@ -36,19 +36,8 @@
                     <div class="menu-title">Product manage</div>
                 </a>
                 <ul>
-                    <li> <a href="app-emailbox.html"><i class="bx bx-right-arrow-alt"></i>all product</a>
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <a href="javascript:;" class="has-arrow">
-                    <div class="parent-icon"><i class="bx bx-category"></i>
-                    </div>
-                    <div class="menu-title">All Order</div>
-                </a>
-                <ul>
-                    <li> <a href="app-emailbox.html"><i class="bx bx-right-arrow-alt"></i>all order</a>
-                    </li>
+                    <li> <a href="{{ route('vendor.all.product') }}"><i class="bx bx-right-arrow-alt"></i>All Product</a></li>
+                    <li> <a href="{{ route('vendor.create.product') }}"><i class="bx bx-right-arrow-alt"></i>Add Product</a></li>
                 </ul>
             </li>
         @else

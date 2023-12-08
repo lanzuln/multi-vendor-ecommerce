@@ -59,4 +59,11 @@ class SubCategoryController extends Controller {
         toastr()->success('Sub Category deleted');
         return back();
     }
+
+
+    public function GetSubCategory($category_id){
+        $subcat = SubCategory::where('category_id',$category_id)->orderBy('name','ASC')->get();
+            return json_encode($subcat);
+
+    }
 }

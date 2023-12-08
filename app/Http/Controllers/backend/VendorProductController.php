@@ -2,29 +2,37 @@
 
 namespace App\Http\Controllers\backend;
 
-use App\Http\Controllers\Controller;
 use App\Models\Brand;
-use App\Models\Category;
 use App\Models\Product;
-use App\Models\ProductMultiImages;
+use App\Models\Category;
 use App\Models\SubCategory;
-use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\ProductMultiImages;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Facades\Image;
 
-class ProductController extends Controller {
-    public function index() {
-        $products = Product::latest()->get();
-        return view('backend.pages.product.all', compact('products'));
+class VendorProductController extends Controller
+{
+    public function GetVendorSubCategory($category_id){
+        $subcat = SubCategory::where('category_id',$category_id)->orderBy('name','ASC')->get();
+            return json_encode($subcat);
+
     }
-    public function create() {
+    public function VendorAllProduct(){
+
+        $id = Auth::user()->id;
+        $products = Product::where('vendor_id',$id)->latest()->get();
+        return view('vendor.backend.product.all',compact('products'));
+    } // End Method
+
+    public function VendorCreateProduct() {
         $brand = Brand::orderBy('brand_name')->select('id', 'brand_name', 'brand_slug')->get();
         $category = Category::orderBy('category_name')->select('id', 'category_name', 'category_slug')->get();
-        $vendor = User::where('status', 'active')->where('role', 'vendor')->select('id', 'name')->latest()->get();
-        return view('backend.pages.product.create', compact('brand', 'category', 'vendor'));
+        return view('vendor.backend.product.create', compact('brand', 'category',));
     }
 
-    public function store(Request $request) {
+    public function VendorStoreProduct(Request $request) {
 
         $image = $request->file('product_thambnail');
         $name_gen = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
@@ -57,7 +65,7 @@ class ProductController extends Controller {
             'special_deals' => $request->special_deals,
 
             'product_thambnail' => $save_url,
-            'vendor_id' => $request->vendor_id,
+            'vendor_id' => Auth::user()->id,
             'status' => 1,
 
         ]);
@@ -81,21 +89,19 @@ class ProductController extends Controller {
 
         toastr()->success('Product created successfully');
 
-        return redirect()->route('all.product');
+        return redirect()->route('vendor.all.product');
 
     }
-
-    public function edit($id) {
-        $activeVendor = User::where('status', 'active')->where('role', 'vendor')->latest()->get();
+    public function VendorEditProduct($id) {
         $brands = Brand::latest()->get();
         $categories = Category::latest()->get();
         $subcategory = SubCategory::latest()->get();
         $products = Product::findOrFail($id);
         $multiImgs = ProductMultiImages::where('product_id', $id)->get();
-        return view('backend.pages.product.edit', compact('brands', 'categories', 'activeVendor', 'products', 'subcategory', 'multiImgs'));
+        return view('vendor.backend.product.edit', compact('brands', 'categories', 'products', 'subcategory', 'multiImgs'));
     } // End Method
 
-    public function update(Request $request) {
+    public function VendorUpdateProduct(Request $request) {
 
         $product_id = $request->id;
 
@@ -122,17 +128,15 @@ class ProductController extends Controller {
             'featured' => $request->featured,
             'special_offer' => $request->special_offer,
             'special_deals' => $request->special_deals,
-
-            'vendor_id' => $request->vendor_id,
             'status' => 1,
 
         ]);
 
         toastr()->success('Product Updated Without Image Successfully');
-        return redirect()->route('all.product');
+        return redirect()->route('vendor.all.product');
 
     }
-    // update product thumbnail
+
     public function UpdateProductThambnail(Request $request) {
 
         $pro_id = $request->id;
@@ -240,6 +244,4 @@ class ProductController extends Controller {
 
         return redirect()->back();
     }
-    // End Method
-
 }
