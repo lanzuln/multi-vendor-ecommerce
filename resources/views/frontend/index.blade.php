@@ -17,16 +17,16 @@
     @include('frontend.components.home.features-products')
     <!--End Best Sales-->
 
-    <!-- TV Category -->
-    @include('frontend.components.home.tab-products')
+    <!-- gadget Category -->
+    @include('frontend.components.home.gadget')
     <!--End TV Category -->
 
-    <!-- Tshirt Category -->
-    @include('frontend.components.home.tshirt')
+    <!-- food Category -->
+    @include('frontend.components.home.food')
     <!--End Tshirt Category -->
 
-    <!-- Computer Category -->
-    @include('frontend.components.home.computer')
+    <!-- fashion Category -->
+    @include('frontend.components.home.fashion')
     <!--End Computer Category -->
 
     @include('frontend.components.home.recent-tab')

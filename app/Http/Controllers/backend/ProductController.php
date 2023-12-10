@@ -25,6 +25,10 @@ class ProductController extends Controller {
     }
 
     public function store(Request $request) {
+        // dd($request->all());
+        $request->validate([
+            'brand_id'=>'nullable',
+        ]);
 
         $image = $request->file('product_thambnail');
         $name_gen = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
@@ -32,7 +36,7 @@ class ProductController extends Controller {
         $save_url = 'uploads/products/thambnail/' . $name_gen;
 
         // dd($request->all());
-        $product_id = Product::insertGetId([
+        $product_id = Product::create([
 
             'brand_id' => $request->brand_id,
             'category_id' => $request->category_id,
@@ -71,7 +75,7 @@ class ProductController extends Controller {
             $uploadPath = 'uploads/products/multi-image/' . $make_name;
 
             ProductMultiImages::insert([
-                'product_id' => $product_id,
+                'product_id' => $product_id->id,
                 'photo_name' => $uploadPath,
 
             ]);

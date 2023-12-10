@@ -128,7 +128,7 @@
                                     <div class="form-group col-12">
                                         <label for="inputProductType" class="form-label">Product Brand</label>
                                         <select name="brand_id" class="form-select" id="inputProductType">
-                                            <option>Select brand</option>
+                                            <option value="">Select brand</option>
                                             @foreach ($brand as $item)
                                                 <option value="{{ $item->id }}">{{ $item->brand_name }}</option>
                                             @endforeach
@@ -158,7 +158,7 @@
                                     <div class="form-group col-12">
                                         <label for="inputCollection" class="form-label">Select Vendor</label>
                                         <select name="vendor_id" class="form-select" id="inputCollection">
-                                            <option>Select vendor</option>
+                                            <option value="">Select vendor</option>
                                             @foreach ($vendor as $item)
                                                 <option value="{{ $item->id }}">{{ $item->name }}</option>
                                             @endforeach
@@ -304,9 +304,6 @@
                             required: true,
                         },
                         product_qty: {
-                            required: true,
-                        },
-                        brand_id: {
                             required: true,
                         },
                         category_id: {

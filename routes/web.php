@@ -1,17 +1,19 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\VendorController;
-use App\Http\Middleware\RedirectIfAuthenticated;
-use App\Http\Controllers\backend\BrandController;
 use App\Http\Controllers\backend\BannerController;
-use App\Http\Controllers\backend\SliderController;
-use App\Http\Controllers\backend\ProductController;
+use App\Http\Controllers\backend\BrandController;
 use App\Http\Controllers\backend\CategoryController;
+use App\Http\Controllers\backend\ProductController;
+use App\Http\Controllers\backend\SliderController;
 use App\Http\Controllers\backend\SubCategoryController;
 use App\Http\Controllers\backend\VendorProductController;
+use App\Http\Controllers\frontend\FrontendVendor;
+use App\Http\Controllers\frontend\homecontroller;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\VendorController;
+use App\Http\Middleware\RedirectIfAuthenticated;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,8 +26,17 @@ use App\Http\Controllers\backend\VendorProductController;
 |
  */
 
-Route::get('/', function () {
-    return view('frontend.index');
+// frontend
+
+Route::controller(homecontroller::class)->group(function () {
+    Route::get('/', 'index');
+    Route::get('/produt/details/{id}/{slug}', 'product_detailed');
+});
+
+Route::controller(FrontendVendor::class)->group(function () {
+
+    Route::get('/vendor-list', 'vendorList')->name('vendor_list');
+    Route::get('/vendor/details/{id}', 'vendor_detailed');
 });
 
 // ====== user
@@ -126,11 +137,11 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     // Banner All Route
     Route::controller(BannerController::class)->group(function () {
         Route::get('/all/banner', 'AllBanner')->name('all.banner');
-        Route::get('/add/banner' , 'AddBanner')->name('add.banner');
-        Route::post('/store/banner' , 'StoreBanner')->name('store.banner');
-        Route::get('/edit/banner/{id}' , 'EditBanner')->name('edit.banner');
-        Route::post('/update/banner' , 'UpdateBanner')->name('update.banner');
-        Route::get('/delete/banner/{id}' , 'DeleteBanner')->name('delete.banner');
+        Route::get('/add/banner', 'AddBanner')->name('add.banner');
+        Route::post('/store/banner', 'StoreBanner')->name('store.banner');
+        Route::get('/edit/banner/{id}', 'EditBanner')->name('edit.banner');
+        Route::post('/update/banner', 'UpdateBanner')->name('update.banner');
+        Route::get('/delete/banner/{id}', 'DeleteBanner')->name('delete.banner');
 
     });
 

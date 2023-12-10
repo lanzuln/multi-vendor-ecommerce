@@ -20,7 +20,7 @@
             <div class="card-body">
                 <form method="post" action="{{ route('update.subcategory') }}">
                     @csrf
-                    <input type="text" name="category_id" value="{{ $SubCategory->id }}">
+                    <input type="hidden" name="category_id" value="{{ $SubCategory->id }}">
                     {{-- category list  --}}
                     <div class="row mb-3">
                         <div class="col-sm-2">
