@@ -95,7 +95,7 @@
                                         <li><a href="#">150g</a></li>
                                     </ul>
                                 </div>
-                                @if ($single_product->product_size == null)
+                                @if (($single_product->product_size && $single_product->product_color ) == null)
                                 @else
                                     <div class="attr-detail attr-size mb-30">
                                         <strong class="mr-10" style="width:50px;">Size : </strong>

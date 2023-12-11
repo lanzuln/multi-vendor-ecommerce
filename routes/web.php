@@ -31,6 +31,9 @@ use Illuminate\Support\Facades\Route;
 Route::controller(homecontroller::class)->group(function () {
     Route::get('/', 'index');
     Route::get('/produt/details/{id}/{slug}', 'product_detailed');
+
+    Route::get('/product/category/{id}', 'CatWiseProduct');
+    Route::get('/product/sub-category/{id}/{slug}', 'SubCatWiseProduct');
 });
 
 Route::controller(FrontendVendor::class)->group(function () {

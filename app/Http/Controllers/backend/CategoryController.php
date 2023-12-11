@@ -31,7 +31,7 @@ class CategoryController extends Controller {
 
         Category::create([
             'category_name' => $request->category_name,
-            'category_slug' => strtolower(str_replace(' ', '-', $request->category_slug)),
+            'category_slug' => strtolower(str_replace(' ', '-', $request->category_name)),
             'category_image' => $image_url,
         ]);
 
@@ -59,14 +59,14 @@ class CategoryController extends Controller {
 
             Category::where('id', $category_Id)->update([
                 'category_name' => $request->category_name,
-                'category_slug' => strtolower(str_replace(' ', '-', $request->category_slug)),
+                'category_slug' => strtolower(str_replace(' ', '-', $request->category_name)),
                 'category_image' => $image_url,
             ]);
 
         } else {
             Category::where('id', $category_Id)->update([
                 'category_name' => $request->category_name,
-                'category_slug' => strtolower(str_replace(' ', '-', $request->category_slug)),
+                'category_slug' => strtolower(str_replace(' ', '-', $request->category_name)),
             ]);
         }
         toastr()->success('Category updated');

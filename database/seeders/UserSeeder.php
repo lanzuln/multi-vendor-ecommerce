@@ -35,7 +35,7 @@ class UserSeeder extends Seeder
                 'status' => 'active',
 
             ],
-              //User OR Customer
+            //   User OR Customer
             [
                 'name' => 'User',
                 'username' => 'user',

@@ -17,11 +17,11 @@
                 @foreach ($feature_category as $item)
                 <div class="card-2 bg-9 wow animate__animated animate__fadeInUp" data-wow-delay=".1s">
                     <figure class="img-hover-scale overflow-hidden">
-                        <a href="shop-grid-right.html"><img
+                        <a href="{{url('/product/category/'.$item->id)}}"><img
                                 src="{{ asset($item->category_image) }}"
                                 alt="" /></a>
                     </figure>
-                    <h6><a href="shop-grid-right.html">{{$item->category_name}}</a></h6>
+                    <h6><a href="{{url('/product/category/'.$item->id)}}">{{$item->category_name}}</a></h6>
                     @php
                          $category_count= App\Models\Product::where('category_id',$item->id)->get();
                     @endphp

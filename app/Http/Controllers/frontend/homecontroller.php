@@ -6,6 +6,7 @@ use App\Models\Banner;
 use App\Models\Slider;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\SubCategory;
 use Illuminate\Http\Request;
 use App\Models\ProductMultiImages;
 use App\Http\Controllers\Controller;
@@ -69,4 +70,29 @@ class homecontroller extends Controller
         $relatedProduct = Product::where('category_id',$cat_id)->where('id','!=',$id)->orderBy('id','DESC')->limit(4)->get();
         return view('frontend.layout.product.single_product',compact('single_product','product_color','product_size','multiImage','relatedProduct'));
     }
+
+    public function CatWiseProduct(Request $request,$id){
+        $products = Product::where('status',1)->where('category_id',$id)->orderBy('id','DESC')->get();
+        $categories = Category::orderBy('category_name','ASC')->get();
+
+        $cat_name=  Category::where('id',$id)->first();
+        $new_product =  Product::where('status',1)->latest()->limit(3)->get();
+
+        return view('frontend.category.all_cat',compact('products','categories','cat_name','new_product'));
+
+       }
+
+
+       public function SubCatWiseProduct(Request $request,$id,$slug){
+        $products = Product::where('status',1)->where('subcategory_id',$id)->orderBy('id','DESC')->get();
+        $categories = Category::orderBy('category_name','ASC')->get();
+
+        $Sub_categories = SubCategory::orderBy('name','ASC')->get();
+
+        $Sub_categories_name=  SubCategory::where('id',$id)->first();
+        $new_product =  Product::where('status',1)->latest()->limit(3)->get();
+
+        return view('frontend.category.all_sub_cat',compact('products','categories','Sub_categories','Sub_categories_name','new_product'));
+
+       }
 }

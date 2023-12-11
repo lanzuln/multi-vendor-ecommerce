@@ -310,14 +310,15 @@
                                 @endphp
                                 @foreach ($menucategory as $item)
                                 <li>
-                                    <a href="shop-grid-right.html">{{$item->category_name}}<i class="fi-rs-angle-down"></i></a>
+
+                                    <a href="{{ url('product/category/'.$item->id) }}">{{$item->category_name}}<i class="fi-rs-angle-down"></i></a>
                                     <ul class="sub-menu">
                                         @php
                                             $sub_category = App\Models\SubCategory::where('category_id',$item->id)->orderBy('name', 'asc')->get();
                                         @endphp
 
                                         @foreach ($sub_category as $item)
-                                        <li><a href="">{{$item->name}}</a></li>
+                                        <li><a href="{{ url('/product/sub-category/'.$item->id."/".$item->slug) }}">{{$item->name}}</a></li>
                                         @endforeach
                                     </ul>
                                 </li>
