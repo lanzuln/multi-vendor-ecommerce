@@ -44,8 +44,8 @@
                                                     data-bs-toggle="modal" data-bs-target="#quickViewModal"  id="{{$item->id}}" onclick="productView(this.id)"> <i
                                                         class="fi-rs-eye"></i></a>
                                                         <a aria-label="Add To Wishlist" class="action-btn" id="{{ $item->id }}" onclick="addToWishList(this.id)"  ><i class="fi-rs-heart"></i></a>
-                                                <a aria-label="Compare" class="action-btn small hover-up"
-                                                    href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
+                                                        <a aria-label="Compare" class="action-btn" id="{{ $item->id }}"
+                                                            onclick="addToCompare(this.id)"><i class="fi-rs-shuffle"></i></a>
                                             </div>
                                             @php
                                                 $amount = $item->selling_price - $item->discount_price;
@@ -92,9 +92,13 @@
                                             </div>
                                             <span class="font-xs text-heading"> Sold: 90/120</span>
                                         </div> --}}
-                                            <a href="shop-cart.html" class="btn w-100 hover-up"><i
-                                                    class="fi-rs-shopping-cart mr-5"></i>Add To Cart</a>
+                                            <a href="{{ url('/produt/details/' . $item->id . '/' . $item->product_slug) }}" class="btn w-100 hover-up"><i
+                                                    class="fi-rs-shopping-cart mr-5"></i>Details</a>
                                         </div>
+
+
+
+
                                     </div>
                                 @endforeach
                             </div>

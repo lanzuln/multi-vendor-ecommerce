@@ -19,7 +19,7 @@ $vendors = App\Models\User::where('status','active')->where('role','vendor')->or
             <div class="vendor-wrap mb-40">
                 <div class="vendor-img-action-wrap">
                     <div class="vendor-img">
-                        <a href="vendor-details-1.html">
+                        <a href="{{url('/vendor/details/'.$item->id)}}">
                             <img class="default-img" src="{{ asset($item->photo ?? 'default.jpg')}}"
                                 alt="" />
                         </a>
@@ -34,7 +34,7 @@ $vendors = App\Models\User::where('status','active')->where('role','vendor')->or
                             <div class="product-category">
                                 <span class="text-muted">Since {{ \Carbon\Carbon::parse($item->join_date)->format('Y') }}</span>
                             </div>
-                            <h4 class="mb-5"><a href="vendor-details-1.html">{{$item->name}}</a></h4>
+                            <h4 class="mb-5"><a href="{{url('/vendor/details/'.$item->id)}}">{{$item->name}}</a></h4>
                             <div class="product-rate-cover">
                                 @php
                                 $products = App\Models\Product::where('vendor_id',$item->id)->get();

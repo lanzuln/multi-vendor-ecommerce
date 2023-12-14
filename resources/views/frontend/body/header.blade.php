@@ -117,11 +117,11 @@
 
                             <div class="header-action-icon-2">
                                 <a href="{{ route('compare') }}">
-                                    <img class="svgInject" alt="Nest" src="{{ asset('frontend/assets/imgs/theme/icons/icon-compare.svg')}}" />
+                                    <img class="svgInject" alt="Nest"
+                                        src="{{ asset('frontend/assets/imgs/theme/icons/icon-compare.svg') }}" />
                                     @auth
-                                    <span class="pro-count blue" id=""> 10</span>
-
-                                @endauth
+                                        <span class="pro-count blue" id="compareQty"></span>
+                                    @endauth
                                 </a>
                                 <a href="{{ route('compare') }}"><span class="lable ml-0">Compare</span></a>
                             </div>

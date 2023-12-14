@@ -100,8 +100,8 @@
                                         @endif
 
                                         <div class="add-cart">
-                                            <a class="add" href="shop-cart.html"><i
-                                                    class="fi-rs-shopping-cart mr-5"></i>Add </a>
+                                            <a class="add" href="{{ url('/produt/details/' . $item->id . '/' . $item->product_slug) }}"><i
+                                                    class="fi-rs-shopping-cart mr-5"></i>Details</a>
                                         </div>
                                     </div>
                                 </div>
@@ -146,7 +146,7 @@
                                             <a aria-label="Compare" class="action-btn" id="{{ $c_t_product->id }}"
                                                 onclick="addToCompare(this.id)"><i class="fi-rs-shuffle"></i></a>
                                             <a aria-label="Quick view" class="action-btn" data-bs-toggle="modal"
-                                                data-bs-target="#quickViewModal" id="{{ $item->id }}"
+                                                data-bs-target="#quickViewModal" id="{{ $c_t_product->id }}"
                                                 onclick="productView(this.id)"><i class="fi-rs-eye"></i></a>
                                         </div>
                                         <div class="product-badges product-badges-position product-badges-mrg">
@@ -203,8 +203,8 @@
                                             @endif
 
                                             <div class="add-cart">
-                                                <a class="add" href="shop-cart.html"><i
-                                                        class="fi-rs-shopping-cart mr-5"></i>Add </a>
+                                                <a class="add" href="{{ url('/produt/details/' . $c_t_product->id . '/' . $c_t_product->product_slug) }}"><i
+                                                        class="fi-rs-shopping-cart mr-5"></i>Details</a>
                                             </div>
                                         </div>
                                     </div>

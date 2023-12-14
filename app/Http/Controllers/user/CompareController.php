@@ -40,5 +40,24 @@ class CompareController extends Controller
 
     }//
 
+    public function GetCompareProduct(){
+
+        $compare = Compare::with('product')->where('user_id',Auth::id())->latest()->get();
+
+
+        $compareQty= Compare::where('user_id',Auth::user()->id)->count();
+
+        // $wishQty = wishlist::count();
+
+        return response()->json(['compare'=> $compare, 'compareQty' => $compareQty]);
+
+    }// End Method
+
+    public function CompareRemove($id){
+
+        Compare::where('user_id',Auth::id())->where('id',$id)->delete();
+     return response()->json(['success' => 'Successfully Product Remove' ]);
+    }//
+
 
 }
