@@ -9,3 +9,8 @@ img.image_fit{
 
     width: inherit !important;
 }
+
+.cart-dropdown-wrap ul li {
+
+    flex-wrap: nowrap;
+}

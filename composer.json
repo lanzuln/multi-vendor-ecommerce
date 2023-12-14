@@ -12,8 +12,18 @@
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
-        "yoeunes/toastr": "^2.3"
+        "yoeunes/toastr": "^2.3",
+        "bumbummen99/shoppingcart": "dev-laravel10"
+
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/phobrv/LaravelShoppingcart.git",
+            "no-api": true
+        }
+    ],
+
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
         "laravel/pint": "^1.0",

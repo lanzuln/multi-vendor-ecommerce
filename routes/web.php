@@ -8,33 +8,45 @@ use App\Http\Controllers\backend\ProductController;
 use App\Http\Controllers\backend\SliderController;
 use App\Http\Controllers\backend\SubCategoryController;
 use App\Http\Controllers\backend\VendorProductController;
+use App\Http\Controllers\frontend\CartController;
 use App\Http\Controllers\frontend\FrontendVendor;
 use App\Http\Controllers\frontend\homecontroller;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\user\CompareController;
+use App\Http\Controllers\user\WishlistController;
 use App\Http\Controllers\VendorController;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
- */
-
-// frontend
-
 Route::controller(homecontroller::class)->group(function () {
-    Route::get('/', 'index');
+    Route::get('/', 'index')->name('homePage');
     Route::get('/produt/details/{id}/{slug}', 'product_detailed');
 
     Route::get('/product/category/{id}', 'CatWiseProduct');
     Route::get('/product/sub-category/{id}/{slug}', 'SubCatWiseProduct');
+
+    // Product View Modal With Ajax
+    Route::get('/product/view/modal/{id}', 'ProductViewAjax');
+
 });
+Route::controller(CartController::class)->group(function () {
+    /// Add to cart store data
+    Route::post('/cart/data/store/{id}', 'AddToCart');
+
+    // Get Data from mini Cart
+    Route::get('/product/mini/cart', 'AddMiniCart');
+
+    Route::get('/minicart/product/remove/{rowId}', 'RemoveMiniCart');
+
+    /// Add to cart store data For Product Details Page
+    Route::post('/dcart/data/store/{id}', 'AddToCartDetails');
+
+});
+
+//   Add to wishlist
+Route::post('/add-to-wishlist/{product_id}', [WishlistController::class, 'AddToWishList']);
+/// Add to Compare
+Route::post('/add-to-compare/{product_id}', [CompareController::class, 'AddToCompare']);
 
 Route::controller(FrontendVendor::class)->group(function () {
 
@@ -52,7 +64,19 @@ Route::middleware(['auth', 'role:user'])->group(function () {
         // profile
         route::post('/profile/update', 'profileUpdate')->name('profile.update');
         route::post('/user/password/update', 'passwordUpdate')->name('user.password.update');
+
     });
+
+    Route::controller(WishlistController::class)->group(function () {
+        Route::get('/wishlist', 'AllWishlist')->name('wishlist');
+        Route::get('/get-wishlist-product', 'GetWishlistProduct');
+        Route::get('/wishlist-remove/{id}', 'WishlistRemove');
+    });
+
+    Route::controller(CompareController::class)->group(function () {
+        Route::get('/compare', 'AllCompare')->name('compare');
+    });
+
 });
 
 // ========= admin

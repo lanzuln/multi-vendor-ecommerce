@@ -116,52 +116,47 @@
                             </div>
 
                             <div class="header-action-icon-2">
-                                <a href="shop-wishlist.html">
+                                <a href="{{ route('compare') }}">
+                                    <img class="svgInject" alt="Nest" src="{{ asset('frontend/assets/imgs/theme/icons/icon-compare.svg')}}" />
+                                    @auth
+                                    <span class="pro-count blue" id=""> 10</span>
+
+                                @endauth
+                                </a>
+                                <a href="{{ route('compare') }}"><span class="lable ml-0">Compare</span></a>
+                            </div>
+
+                            <div class="header-action-icon-2">
+                                <a href="{{ route('wishlist') }}">
                                     <img class="svgInject" alt="Nest"
                                         src="{{ asset('frontend/assets/imgs/theme/icons/icon-heart.svg') }}" />
-                                    <span class="pro-count blue">6</span>
+                                    @auth
+                                        <span class="pro-count blue" id="wishQty"> </span>
+
+                                    @endauth
                                 </a>
-                                <a href="shop-wishlist.html"><span class="lable">Wishlist</span></a>
+                                <a href="{{ route('wishlist') }}"><span class="lable">Wishlist</span></a>
                             </div>
                             <div class="header-action-icon-2">
                                 <a class="mini-cart-icon" href="shop-cart.html">
                                     <img alt="Nest"
                                         src="{{ asset('frontend/assets/imgs/theme/icons/icon-cart.svg') }}" />
-                                    <span class="pro-count blue">2</span>
+                                    @auth
+                                        <span class="pro-count blue" id="cartQty"> </span>
+                                    @endauth
+
                                 </a>
                                 <a href="shop-cart.html"><span class="lable">Cart</span></a>
                                 <div class="cart-dropdown-wrap cart-dropdown-hm2">
                                     <ul>
-                                        <li>
-                                            <div class="shopping-cart-img">
-                                                <a href="shop-product-right.html"><img alt="Nest"
-                                                        src="{{ asset('frontend/assets/imgs/shop/thumbnail-3.jpg') }}" /></a>
-                                            </div>
-                                            <div class="shopping-cart-title">
-                                                <h4><a href="shop-product-right.html">Daisy Casual Bag</a></h4>
-                                                <h4><span>1 × </span>$800.00</h4>
-                                            </div>
-                                            <div class="shopping-cart-delete">
-                                                <a href="#"><i class="fi-rs-cross-small"></i></a>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="shopping-cart-img">
-                                                <a href="shop-product-right.html"><img alt="Nest"
-                                                        src="{{ asset('frontend/assets/imgs/shop/thumbnail-2.jpg') }}" /></a>
-                                            </div>
-                                            <div class="shopping-cart-title">
-                                                <h4><a href="shop-product-right.html">Corduroy Shirts</a></h4>
-                                                <h4><span>1 × </span>$3200.00</h4>
-                                            </div>
-                                            <div class="shopping-cart-delete">
-                                                <a href="#"><i class="fi-rs-cross-small"></i></a>
-                                            </div>
-                                        </li>
+                                        <div id="miniCart">
+
+                                        </div>
                                     </ul>
                                     <div class="shopping-cart-footer">
                                         <div class="shopping-cart-total">
-                                            <h4>Total <span>$4000.00</span></h4>
+
+                                            <h4>Total <span id="cartSubTotal"> </span></h4>
                                         </div>
                                         <div class="shopping-cart-button">
                                             <a href="shop-cart.html" class="outline">View cart</a>
@@ -243,9 +238,8 @@
                                 <ul>
                                     @foreach ($allcategory as $item)
                                         <li>
-                                            <a href=""> <img
-                                                    src="{{ asset($item->category_image) }}"
-                                                    alt="" />{{$item->category_name}}</a>
+                                            <a href=""> <img src="{{ asset($item->category_image) }}"
+                                                    alt="" />{{ $item->category_name }}</a>
                                         </li>
                                     @endforeach
 
@@ -253,9 +247,8 @@
                                 <ul class="end">
                                     @foreach ($allcategoryDesc as $item)
                                         <li>
-                                            <a href=""> <img
-                                                    src="{{ asset($item->category_image) }}"
-                                                    alt="" />{{$item->category_name}}</a>
+                                            <a href=""> <img src="{{ asset($item->category_image) }}"
+                                                    alt="" />{{ $item->category_name }}</a>
                                         </li>
                                     @endforeach
                                 </ul>
@@ -297,7 +290,7 @@
                             <ul>
                                 {{-- home  --}}
                                 <li>
-                                    <a class="active" href="index.html">Home </a>
+                                    <a class="active" href="{{ route('homePage') }}">Home </a>
 
                                 </li>
                                 {{-- about  --}}
@@ -306,22 +299,29 @@
                                 </li>
                                 {{-- category --}}
                                 @php
-                                    $menucategory = App\Models\Category::orderBy('category_name', 'asc')->limit(5)->get();
+                                    $menucategory = App\Models\Category::orderBy('category_name', 'asc')
+                                        ->limit(5)
+                                        ->get();
                                 @endphp
                                 @foreach ($menucategory as $item)
-                                <li>
+                                    <li>
 
-                                    <a href="{{ url('product/category/'.$item->id) }}">{{$item->category_name}}<i class="fi-rs-angle-down"></i></a>
-                                    <ul class="sub-menu">
-                                        @php
-                                            $sub_category = App\Models\SubCategory::where('category_id',$item->id)->orderBy('name', 'asc')->get();
-                                        @endphp
+                                        <a href="{{ url('product/category/' . $item->id) }}">{{ $item->category_name }}<i
+                                                class="fi-rs-angle-down"></i></a>
+                                        <ul class="sub-menu">
+                                            @php
+                                                $sub_category = App\Models\SubCategory::where('category_id', $item->id)
+                                                    ->orderBy('name', 'asc')
+                                                    ->get();
+                                            @endphp
 
-                                        @foreach ($sub_category as $item)
-                                        <li><a href="{{ url('/product/sub-category/'.$item->id."/".$item->slug) }}">{{$item->name}}</a></li>
-                                        @endforeach
-                                    </ul>
-                                </li>
+                                            @foreach ($sub_category as $item)
+                                                <li><a
+                                                        href="{{ url('/product/sub-category/' . $item->id . '/' . $item->slug) }}">{{ $item->name }}</a>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    </li>
                                 @endforeach
 
 
@@ -362,34 +362,13 @@
                                 <span class="pro-count white">2</span>
                             </a>
                             <div class="cart-dropdown-wrap cart-dropdown-hm2">
-                                <ul>
-                                    <li>
-                                        <div class="shopping-cart-img">
-                                            <a href="shop-product-right.html"><img alt="Nest"
-                                                    src="{{ asset('frontend/assets/imgs/shop/thumbnail-3.jpg') }}" /></a>
-                                        </div>
-                                        <div class="shopping-cart-title">
-                                            <h4><a href="shop-product-right.html">Plain Striola Shirts</a></h4>
-                                            <h3><span>1 × </span>$800.00</h3>
-                                        </div>
-                                        <div class="shopping-cart-delete">
-                                            <a href="#"><i class="fi-rs-cross-small"></i></a>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="shopping-cart-img">
-                                            <a href="shop-product-right.html"><img alt="Nest"
-                                                    src="{{ asset('frontend/assets/imgs/shop/thumbnail-4.jpg') }}" /></a>
-                                        </div>
-                                        <div class="shopping-cart-title">
-                                            <h4><a href="shop-product-right.html">Macbook Pro 2022</a></h4>
-                                            <h3><span>1 × </span>$3500.00</h3>
-                                        </div>
-                                        <div class="shopping-cart-delete">
-                                            <a href="#"><i class="fi-rs-cross-small"></i></a>
-                                        </div>
-                                    </li>
-                                </ul>
+
+                                {{-- <div id="miniCart"> --}}
+                                {{-- mini card show here  --}}
+                                {{-- </div> --}}
+
+
+
                                 <div class="shopping-cart-footer">
                                     <div class="shopping-cart-total">
                                         <h4>Total <span>$383.00</span></h4>

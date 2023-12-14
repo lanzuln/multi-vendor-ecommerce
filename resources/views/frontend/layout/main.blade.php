@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <title>Nest - Multipurpose eCommerce HTML Template</title>
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <meta name="csrf-token" content="{{ csrf-token() }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta property="og:title" content="" />
@@ -57,8 +57,8 @@
         </div>
     </div> --}}
     <!-- Vendor JS-->
-    <script src="{{ asset('frontend/assets/js/vendor/modernizr-3.6.0.min.js') }}"></script>
     <script src="{{ asset('frontend/assets/js/vendor/jquery-3.6.0.min.js') }}"></script>
+    <script src="{{ asset('frontend/assets/js/vendor/modernizr-3.6.0.min.js') }}"></script>
     <script src="{{ asset('frontend/assets/js/vendor/jquery-migrate-3.3.0.min.js') }}"></script>
     <script src="{{ asset('frontend/assets/js/vendor/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('frontend/assets/js/plugins/slick.js') }}"></script>
@@ -79,16 +79,428 @@
     <!-- Template  JS -->
     <script src="{{ asset('frontend/assets/js/main.js') }}?v=5.3"></script>
     <script src="{{ asset('frontend/assets/js/shop.js') }}?v=5.3"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script type="text/javascript">
-
         $.ajaxSetup({
-            headers:{
-                'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('centent')
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        // quick view ajax call
+        function productView(id) {
+            // alert(id)
+            $.ajax({
+                type: 'GET',
+                url: '/product/view/modal/' + id,
+                dataType: 'json',
+                success: function(data) {
+                    // console.log(data)
+                    $('#pname').text(data.product.product_name);
+                    $('#pprice').text(data.product.selling_price);
+                    $('#pcode').text(data.product.product_code);
+                    $('#pcategory').text(data.product.category.category_name);
+
+                    $('#pimage').attr('src', '/' + data.product.product_thambnail);
+
+                    $('#product_id').val(id);
+                    $('#qty').val(1);
+
+                    // brand name
+                    if (data.product.brand.brand_name) {
+                        $('#pbrand').text(data.product.brand.brand_name);
+                    }
+                    // Product Price
+                    if (data.product.discount_price == null) {
+                        $('#pprice').text('');
+                        $('#oldprice').text('');
+                        $('#pprice').text(data.product.selling_price);
+                    } else {
+                        $('#pprice').text(data.product.discount_price);
+                        $('#oldprice').text(data.product.selling_price);
+                    } // end else
+
+
+                    /// Start Stock Option
+                    if (data.product.product_qty > 0) {
+                        $('#aviable').text('');
+                        $('#stockout').text('');
+                        $('#aviable').text('aviable');
+                    } else {
+                        $('#aviable').text('');
+                        $('#stockout').text('');
+                        $('#stockout').text('stockout');
+                    }
+                    ///End Start Stock Option
+
+                    $('select[name="size"]').empty();
+                    $.each(data.size, function(key, value) {
+                        $('select[name="size"]').append('<option value="' + value + ' ">' + value +
+                            '  </option')
+                        if (data.size == "") {
+                            $('#sizeArea').hide();
+                        } else {
+                            $('#sizeArea').show();
+                        }
+                    }) // end size
+                    ///Color
+                    $('select[name="color"]').empty();
+                    $.each(data.color, function(key, value) {
+                        $('select[name="color"]').append('<option value="' + value + ' ">' + value +
+                            '  </option')
+                        if (data.color == "") {
+                            $('#colorArea').hide();
+                        } else {
+                            $('#colorArea').show();
+                        }
+                    }) // end size
+
+
+                }
+            })
+
+
+
+
+        }
+
+        /// start Add To Cart Prodcut
+        function addToCart() {
+            // debugger;
+            var product_name = $('#pname').text();
+            var id = $('#product_id').val();
+            var color = $('#color option:selected').text();
+            var size = $('#size option:selected').text();
+            var quantity = $('#qty').val();
+            $.ajax({
+
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    color: color,
+                    size: size,
+                    quantity: quantity,
+                    product_name: product_name
+                },
+                url: '/cart/data/store/' + id,
+                success: function(data) {
+                    $('#closeModal').click();
+                    miniCart();
+
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'success',
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                    if ($.isEmptyObject(data.error)) {
+
+                        Toast.fire({
+                            type: 'success',
+                            title: data.success,
+                        })
+                    } else {
+
+                        Toast.fire({
+                            type: 'error',
+                            title: data.error,
+                        })
+                    }
+                }
+            })
+        }
+
+
+        /// End Add To Cart Prodcut
+
+
+        function miniCart() {
+            $.ajax({
+                type: 'GET',
+                url: '/product/mini/cart',
+                dataType: 'json',
+                success: function(response) {
+                    $('#cartSubTotal').text(response.cartTotal);
+                    $('#cartQty').text(response.cartQty);
+                    var miniCart = ""
+
+                    $.each(response.carts, function(key, value) {
+                        miniCart += `
+
+                                    <li>
+                                        <div class="shopping-cart-img">
+                                            <a href="shop-product-right.html"><img alt="Nest"
+                                                    src="${value.options.image}" /></a>
+                                        </div>
+                                        <div class="shopping-cart-title">
+                                            <h4><a href="shop-product-right.html">${value.name}</a></h4>
+                                            <h3><span>${value.qty} × </span>${value.price}</h3>
+                                        </div>
+                                        <div class="shopping-cart-delete">
+                                            <a type="submit" id="${value.rowId}" onclick="miniCartRemove(this.id)"  ><i class="fi-rs-cross-small"></i></a>
+                                        </div>
+                                    </li>
+                        `
+                    })
+                    $('#miniCart').html(miniCart);
+                }
+            })
+        }
+        miniCart();
+
+        /// Mini Cart Remove Start
+        function miniCartRemove(rowId) {
+            $.ajax({
+                type: 'GET',
+                url: '/minicart/product/remove/' + rowId,
+                dataType: 'json',
+                success: function(data) {
+                    miniCart();
+                    // Start Message
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'success',
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                    if ($.isEmptyObject(data.error)) {
+
+                        Toast.fire({
+                            type: 'success',
+                            title: data.success,
+                        })
+                    } else {
+
+                        Toast.fire({
+                            type: 'error',
+                            title: data.error,
+                        })
+                    }
+                    // End Message
+                }
+            })
+        }
+        /// Mini Cart Remove End
+
+        /// Start Details Page Add To Cart Product
+        function addToCartDetails() {
+            var product_name = $('#dpname').text();
+            var id = $('#dproduct_id').val();
+            var color = $('#dcolor option:selected').text();
+            var size = $('#dsize option:selected').text();
+            var quantity = $('#dqty').val();
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                data: {
+                    color: color,
+                    size: size,
+                    quantity: quantity,
+                    product_name: product_name
+                },
+                url: "/dcart/data/store/" + id,
+                success: function(data) {
+                    miniCart();
+
+                    // console.log(data)
+                    // Start Message
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'success',
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                    if ($.isEmptyObject(data.error)) {
+
+                        Toast.fire({
+                            type: 'success',
+                            title: data.success,
+                        })
+                    } else {
+
+                        Toast.fire({
+                            type: 'error',
+                            title: data.error,
+                        })
+                    }
+                    // End Message
+                }
+            })
+        }
+    </script>
+
+    {{-- add to wish list  --}}
+    <script type="text/javascript">
+        function addToWishList(product_id) {
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                url: "/add-to-wishlist/" + product_id,
+                success: function(data) {
+                    // Start Message
+                    wishlist();
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                    if ($.isEmptyObject(data.error)) {
+
+                        Toast.fire({
+                            icon: 'success',
+                            type: 'success',
+                            title: data.success,
+                        })
+                    } else {
+
+                        Toast.fire({
+                            type: 'error',
+                            icon: 'error',
+                            title: data.error,
+                        })
+                    }
+                    // End Message
+                }
+            })
+        }
+    </script>
+
+    {{-- wish list all data  --}}
+    <script type="text/javascript">
+        function wishlist() {
+            $.ajax({
+                type: "GET",
+                dataType: 'json',
+                url: "/get-wishlist-product/",
+                success: function(response) {
+                    $('#wishQty').text(response.wishQty);
+                    var rows = ""
+                    $.each(response.wishlist, function(key, value) {
+
+
+                        rows += `<tr class="pt-30">
+                        <td class="custome-checkbox pl-30">
+
+                        </td>
+                        <td class="image product-thumbnail pt-40"><img src="${value.product.product_thambnail}" alt="#" /></td>
+                        <td class="product-des product-name">
+                            <h6><a class="product-name mb-10" href="shop-product-right.html">${value.product.product_name} </a></h6>
+                            <div class="product-rate-cover">
+                                <div class="product-rate d-inline-block">
+                                    <div class="product-rating" style="width: 90%"></div>
+                                </div>
+                                <span class="font-small ml-5 text-muted"> (4.0)</span>
+                            </div>
+                        </td>
+                        <td class="price" data-title="Price">
+                        ${value.product.discount_price == null
+                        ? `<h3 class="text-brand">$${value.product.selling_price}</h3>`
+                        :`<h3 class="text-brand">$${value.product.discount_price}</h3>`
+                        }
+
+                        </td>
+                        <td class="text-center detail-info" data-title="Stock">
+                            ${value.product.product_qty > 0
+                                ? `<span class="stock-status in-stock mb-0"> In Stock </span>`
+                                :`<span class="stock-status out-stock mb-0">Stock Out </span>`
+                            }
+
+                        </td>
+
+                        <td class="action text-center" data-title="Remove">
+                            <a type="submit" class="text-body" id="${value.id}" onclick="wishlistRemove(this.id)" ><i class="fi-rs-trash"></i></a>
+                        </td>
+                    </tr> `
+                    });
+                    $('#wishlist').html(rows);
+
+                }
+            })
+        }
+        wishlist();
+    </script>
+
+    {{-- wishlist remove  --}}
+    <script>
+        function wishlistRemove(id) {
+            $.ajax({
+                type: "GET",
+                dataType: 'json',
+                url: "/wishlist-remove/" + id,
+                success: function(data) {
+                    wishlist();
+                    // Start Message
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                    if ($.isEmptyObject(data.error)) {
+
+                        Toast.fire({
+                            type: 'success',
+                            icon: 'success',
+                            title: data.success,
+                        })
+                    } else {
+
+                        Toast.fire({
+                            type: 'error',
+                            icon: 'error',
+                            title: data.error,
+                        })
+                    }
+                    // End Message
+                }
+            })
+        }
+        // Wishlist Remove End
+    </script>
+
+<script type="text/javascript">
+    function addToCompare(product_id) {
+        $.ajax({
+            type: "POST",
+            dataType: 'json',
+            url: "/add-to-compare/" + product_id,
+            success: function(data) {
+                // Start Message
+                wishlist();
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000
+                })
+                if ($.isEmptyObject(data.error)) {
+
+                    Toast.fire({
+                        icon: 'success',
+                        type: 'success',
+                        title: data.success,
+                    })
+                } else {
+
+                    Toast.fire({
+                        type: 'error',
+                        icon: 'error',
+                        title: data.error,
+                    })
+                }
+                // End Message
             }
         })
-        /// Start product view with Modal
-     </script>
+    }
+</script>
+    <!--  /// End Compare Add -->
+
 </body>
 
 </html>

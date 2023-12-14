@@ -51,7 +51,7 @@
                                 @else
                                     <span class="stock-status out-stock"> Sale Off </span>
                                 @endif
-                                <h2 class="title-detail">{{ $single_product->product_name }}</h2>
+                                <h2 class="title-detail" id="dpname">{{ $single_product->product_name }}</h2>
                                 <div class="product-detail-rating">
                                     <div class="product-rate-cover text-end">
                                         <div class="product-rate d-inline-block">
@@ -67,7 +67,7 @@
                                                 class="current-price text-brand">${{ $single_product->selling_price }}</span>
                                         @else
                                             <span
-                                                class="current-price text-brand">${{ $single_product->selling_price }}</span>
+                                                class="current-price text-brand">${{ $single_product->discount_price }}</span>
                                             <span>
                                                 @php
                                                     $amount = $single_product->selling_price - $single_product->discount_price;
@@ -76,7 +76,7 @@
                                                 <span class="save-price font-md color3 ml-15">{{ round($discount) }}%
                                                     Off</span>
                                                 <span
-                                                    class="old-price font-md ml-15">${{ $single_product->discount_price }}</span>
+                                                    class="old-price font-md ml-15">${{ $single_product->selling_price }}</span>
                                             </span>
                                         @endif
 
@@ -85,21 +85,12 @@
                                 <div class="short-desc mb-30">
                                     <p class="font-lg">{{ $single_product->short_descp }}</p>
                                 </div>
-                                <div class="attr-detail attr-size mb-30">
-                                    <strong class="mr-10">Size / Weight: </strong>
-                                    <ul class="list-filter size-filter font-small">
-                                        <li><a href="#">50g</a></li>
-                                        <li class="active"><a href="#">60g</a></li>
-                                        <li><a href="#">80g</a></li>
-                                        <li><a href="#">100g</a></li>
-                                        <li><a href="#">150g</a></li>
-                                    </ul>
-                                </div>
-                                @if (($single_product->product_size && $single_product->product_color ) == null)
+
+                                @if (($single_product->product_size && $single_product->product_color) == null)
                                 @else
                                     <div class="attr-detail attr-size mb-30">
                                         <strong class="mr-10" style="width:50px;">Size : </strong>
-                                        <select class="form-control unicase-form-control" id="size">
+                                        <select class="form-control unicase-form-control" id="dsize">
                                             <option selected="" disabled="">--Choose Size--</option>
                                             @foreach ($product_size as $size)
                                                 <option value="{{ $size }}">{{ ucwords($size) }}</option>
@@ -113,7 +104,7 @@
                                 @else
                                     <div class="attr-detail attr-size mb-30">
                                         <strong class="mr-10" style="width:50px;">Color : </strong>
-                                        <select class="form-control unicase-form-control" id="size">
+                                        <select class="form-control unicase-form-control" id="dcolor">
                                             <option selected="" disabled="">--Choose Color--</option>
                                             @foreach ($product_color as $color)
                                                 <option value="{{ $color }}">{{ ucwords($color) }}</option>
@@ -124,14 +115,22 @@
                                 <div class="detail-extralink mb-50">
                                     <div class="detail-qty border radius">
                                         <a href="#" class="qty-down"><i class="fi-rs-angle-small-down"></i></a>
-                                        <input type="text" name="quantity" class="qty-val" value="1" min="1">
+                                        <input type="text" name="quantity" id="dqty" class="qty-val" value="1"
+                                            min="1">
                                         <a href="#" class="qty-up"><i class="fi-rs-angle-small-up"></i></a>
                                     </div>
                                     <div class="product-extra-link2">
-                                        <button type="submit" class="button button-add-to-cart"><i
-                                                class="fi-rs-shopping-cart"></i>Add to cart</button>
+                                        <input type="hidden" id="dproduct_id" value="{{ $single_product->id }}">
+                                        <button type="submit" class="button button-add-to-cart"
+                                            onclick="addToCartDetails()"><i class="fi-rs-shopping-cart"></i>Add to
+                                            cart</button>
+
+
                                         <a aria-label="Add To Wishlist" class="action-btn hover-up"
+                                            id="{{ $single_product->id }}" onclick="addToWishList(this.id)"
                                             href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
+
+
                                         <a aria-label="Compare" class="action-btn hover-up" href="shop-compare.html"><i
                                                 class="fi-rs-shuffle"></i></a>
                                     </div>
@@ -546,7 +545,8 @@
                                         <div class="product-cart-wrap hover-up">
                                             <div class="product-img-action-wrap">
                                                 <div class="product-img product-img-zoom">
-                                                    <a href="{{url('/produt/details/'.$item->id.'/'.$item->product_slug)}}" tabindex="0">
+                                                    <a href="{{ url('/produt/details/' . $item->id . '/' . $item->product_slug) }}"
+                                                        tabindex="0">
                                                         <img class="default-img"
                                                             src="{{ asset($item->product_thambnail) }}" alt="">
                                                         <img class="hover-img"
@@ -579,25 +579,24 @@
                                                 </div>
                                             </div>
                                             <div class="product-content-wrap">
-                                                <h2><a href="{{url('/produt/details/'.$item->id.'/'.$item->product_slug)}}"
+                                                <h2><a href="{{ url('/produt/details/' . $item->id . '/' . $item->product_slug) }}"
                                                         tabindex="0">{{ $item->product_name }}</a>
                                                 </h2>
                                                 <div class="rating-result" title="90%">
                                                     <span> </span>
                                                 </div>
 
-                                                @if($item->discount_price == NULL)
-                                                <div class="product-price">
-                                                   <span>${{ $item->selling_price }}</span>
+                                                @if ($item->discount_price == null)
+                                                    <div class="product-price">
+                                                        <span>${{ $item->selling_price }}</span>
 
-                                               </div>
-
-                                               @else
-                                               <div class="product-price">
-                                                   <span>${{ $item->discount_price }}</span>
-                                                   <span class="old-price">${{ $item->selling_price }}</span>
-                                               </div>
-                                               @endif
+                                                    </div>
+                                                @else
+                                                    <div class="product-price">
+                                                        <span>${{ $item->discount_price }}</span>
+                                                        <span class="old-price">${{ $item->selling_price }}</span>
+                                                    </div>
+                                                @endif
 
                                             </div>
                                         </div>

@@ -95,4 +95,23 @@ class homecontroller extends Controller
         return view('frontend.category.all_sub_cat',compact('products','categories','Sub_categories','Sub_categories_name','new_product'));
 
        }
+
+       public function ProductViewAjax($id){
+
+        $product = Product::with('category','brand')->find($id);
+        $color = $product->product_color;
+        $product_color = explode(',', $color);
+
+        $size = $product->product_size;
+        $product_size = explode(',', $size);
+
+        return response()->json(array(
+
+         'product' => $product,
+         'color' => $product_color,
+         'size' => $product_size,
+
+        ));
+
+     }// End Method
 }

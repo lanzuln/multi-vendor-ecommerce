@@ -25,13 +25,22 @@
                                         @csrf
 
                                     <div class="form-group">
-                                        <input type="text" required="" name="name" placeholder="name" />
+                                        <input type="text" required="" name="name" placeholder="name" value="{{old('name')}}"/>
+                                        @error('name')
+                                            <span style="color:red">{{$message}}</span>
+                                        @enderror
                                     </div>
                                     <div class="form-group">
-                                        <input type="text" required="" name="email" placeholder="Email" />
+                                        <input type="text" required="" name="email" placeholder="Email" value="{{old('email')}}"/>
+                                        @error('email')
+                                        <span style="color:red">{{$message}}</span>
+                                    @enderror
                                     </div>
                                     <div class="form-group">
                                         <input required="" type="password" name="password" placeholder="Password" />
+                                        @error('password')
+                                        <span style="color:red">{{$message}}</span>
+                                    @enderror
                                     </div>
                                     <div class="form-group">
                                         <input required="" type="password" name="password_confirmation" placeholder="Confirm password" />
