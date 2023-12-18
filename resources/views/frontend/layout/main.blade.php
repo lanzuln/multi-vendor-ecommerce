@@ -211,8 +211,6 @@
                 }
             })
         }
-
-
         /// End Add To Cart Prodcut
 
 
@@ -258,6 +256,7 @@
                 dataType: 'json',
                 success: function(data) {
                     miniCart();
+                    cart();
                     // Start Message
                     const Toast = Swal.mixin({
                         toast: true,
@@ -514,7 +513,7 @@
                     $.each(response.compare, function(key, value) {
                         rows += ` <tr class="pr_image">
                                     <td class="text-muted font-sm fw-600 font-heading mw-200">Preview</td>
-    <td class="row_img"><img src="/${value.product.product_thambnail} " style="width:300px; height:300px;"  alt="compare-img" /></td>
+                                 <td class="row_img"><img src="/${value.product.product_thambnail} " style="width:300px; height:300px;"  alt="compare-img" /></td>
 
                                 </tr>
                                 <tr class="pr_title">
@@ -567,47 +566,340 @@
         }
         compare();
         // / End Load Compare Data -->
-        // Compare Remove Start
-        function compareRemove(id){
+    </script>
+
+    {{-- // Compare Remove Start --}}
+    <script>
+        function compareRemove(id) {
             $.ajax({
                 type: "GET",
                 dataType: 'json',
-                url: "/compare-remove/"+id,
-                success:function(data){
-                compare();
-                     // Start Message
-            const Toast = Swal.mixin({
-                  toast: true,
-                  position: 'top-end',
+                url: "/compare-remove/" + id,
+                success: function(data) {
+                    compare();
+                    // Start Message
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
 
-                  showConfirmButton: false,
-                  timer: 3000
-            })
-            if ($.isEmptyObject(data.error)) {
-
-                    Toast.fire({
-                    type: 'success',
-                    icon: 'success',
-                    title: data.success,
+                        showConfirmButton: false,
+                        timer: 3000
                     })
-            }else{
+                    if ($.isEmptyObject(data.error)) {
 
-           Toast.fire({
-                    type: 'error',
-                    icon: 'error',
-                    title: data.error,
-                    })
-                }
-              // End Message
+                        Toast.fire({
+                            type: 'success',
+                            icon: 'success',
+                            title: data.success,
+                        })
+                    } else {
+
+                        Toast.fire({
+                            type: 'error',
+                            icon: 'error',
+                            title: data.error,
+                        })
+                    }
+                    // End Message
                 }
             })
         }
 
         // Compare Remove End
-
     </script>
 
+    <!--  // Start Load MY Cart // -->
+    <script type="text/javascript">
+        function cart() {
+            $.ajax({
+                type: 'GET',
+                url: '/get-cart-product',
+                dataType: 'json',
+                success: function(response) {
+                    // console.log(response)
 
+                    var rows = ""
+                    $.each(response.carts, function(key, value) {
+                        rows +=
+                            `<tr class="pt-30">
+           <td class="custome-checkbox pl-30">
+
+           </td>
+           <td class="image product-thumbnail pt-40"><img src="/${value.options.image} " alt="#"></td>
+           <td class="product-des product-name">
+               <h6 class="mb-5"><a class="product-name mb-10 text-heading" href="shop-product-right.html">${value.name} </a></h6>
+
+           </td>
+           <td class="price" data-title="Price">
+               <h4 class="text-body">$${value.price} </h4>
+           </td>
+             <td class="price" data-title="Price">
+             ${value.options.color == null
+               ? `<span>.... </span>`
+               : `<h6 class="text-body">${value.options.color} </h6>`
+             }
+           </td>
+              <td class="price" data-title="Price">
+             ${value.options.size == null
+               ? `<span>.... </span>`
+               : `<h6 class="text-body">${value.options.size} </h6>`
+             }
+           </td>
+           <td class="text-center detail-info" data-title="Stock">
+               <div class="detail-extralink mr-15">
+                   <div class="detail-qty border radius">
+                    <a type="submit" class="qty-down" id="${value.rowId}" onclick="cartDecrement(this.id)"><i class="fi-rs-angle-small-down"></i></a>
+
+                         <input type="text" name="quantity" class="qty-val" value="${value.qty}" min="1">
+                         <a  type="submit" class="qty-up" disabled id="${value.rowId}" onclick="cartIncrement(this.id)"><i class="fi-rs-angle-small-up"></i></a>
+                   </div>
+               </div>
+           </td>
+           <td class="price" data-title="Price">
+               <h4 class="text-brand">$${value.subtotal} </h4>
+           </td>
+           <td class="action text-center" data-title="Remove">
+            <a type="submit" class="text-body"  id="${value.rowId}" onclick="cartRemove(this.id)"><i class="fi-rs-trash"></i></a></td>`
+                    });
+                    $('#cartPage').html(rows);
+                }
+            })
+        }
+        cart();
+
+        // Cart Remove Start
+        function cartRemove(id) {
+            $.ajax({
+                type: "GET",
+                dataType: 'json',
+                url: "/cart-remove/" + id,
+                success: function(data) {
+                    cart();
+                    miniCart();
+                    couponCalculation();
+                    // Start Message
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                    if ($.isEmptyObject(data.error)) {
+
+                        Toast.fire({
+                            type: 'success',
+                            icon: 'success',
+                            title: data.success,
+                        })
+                    } else {
+
+                        Toast.fire({
+                            type: 'error',
+                            icon: 'error',
+                            title: data.error,
+                        })
+                    }
+                    // End Message
+                }
+            })
+        }
+        // Cart Remove End
+
+        // start Cart DECREMENT
+        function cartDecrement(rowId) {
+            $.ajax({
+                type: 'GET',
+                url: "/cart-decrement/" + rowId,
+                dataType: 'json',
+                success: function(data) {
+                    cart();
+                    miniCart();
+                    couponCalculation();
+                }
+            });
+        }
+        // end Cart DECREMENT
+
+        // Cart INCREMENT
+        function cartIncrement(rowId) {
+            $.ajax({
+                type: 'GET',
+                url: "/cart-increment/" + rowId,
+                dataType: 'json',
+                success: function(data) {
+                    cart();
+                    miniCart();
+                    couponCalculation();
+                }
+            });
+        }
+        // Cart INCREMENT End
+    </script>
+    <!--  // End Load MY Cart // -->
+    <script type="text/javascript">
+        function applyCoupon() {
+            var coupon_name = $('#coupon_name').val();
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                data: {
+                    coupon_name: coupon_name
+                },
+                url: "/coupon-apply",
+                success: function(data) {
+                    couponCalculation();
+
+                    if (data.validity == true) {
+                        $('#couponField').hide();
+                    }
+
+                    // Start Message
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                    if ($.isEmptyObject(data.error)) {
+
+                        Toast.fire({
+                            type: 'success',
+                            icon: 'success',
+                            title: data.success,
+                        })
+                    } else {
+
+                        Toast.fire({
+                            type: 'error',
+                            icon: 'error',
+                            title: data.error,
+                        })
+                    }
+                    // End Message
+                }
+            })
+        }
+
+        // Start CouponCalculation Method
+
+        function couponCalculation() {
+            $.ajax({
+                type: 'GET',
+                url: "/coupon-calculation",
+                dataType: 'json',
+                success: function(data) {
+                    if (data.cartItemCount === 0) {
+                        $('#couponCalField').hide()
+                    }
+                        if (data.total) {
+                            $('#couponCalField').html(
+                                ` <tr>
+                    <td class="cart_total_label">
+                        <h6 class="text-muted">Subtotal</h6>
+                    </td>
+                    <td class="cart_total_amount">
+                        <h4 class="text-brand text-end">$${data.total}</h4>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="cart_total_label">
+                        <h6 class="text-muted">Grand Total</h6>
+                    </td>
+                    <td class="cart_total_amount">
+                        <h4 class="text-brand text-end">$${data.total}</h4>
+                    </td>
+                </tr>
+                `)
+                        } else {
+                            $('#couponCalField').html(
+                                `<tr>
+                    <td class="cart_total_label">
+                        <h6 class="text-muted">Subtotal</h6>
+                    </td>
+                    <td class="cart_total_amount">
+                        <h4 class="text-brand text-end">$${data.subtotal}</h4>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="cart_total_label">
+                        <h6 class="text-muted">Coupon </h6>
+                    </td>
+                    <td class="cart_total_amount">
+                        <h6 class="text-brand text-end">${data.coupon_name} <a type="submit" onclick="couponRemove()"><i class="fi-rs-trash"></i> </a> </h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="cart_total_label">
+                        <h6 class="text-muted">Discount Amount  </h6>
+                    </td>
+                    <td class="cart_total_amount">
+                         <h4 class="text-brand text-end">-$${data.discount_amount}</h4>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="cart_total_label">
+                        <h6 class="text-muted">Grand Total </h6>
+                    </td>
+                    <td class="cart_total_amount">
+                        <h4 class="text-brand text-end">$${data.total_amount}</h4>
+                    </td>
+                </tr> `
+                            )
+                        }
+
+                    }
+
+            })
+        }
+        couponCalculation();
+
+        // Start CouponCalculation Method
+    </script>
+    <script type="text/javascript">
+        // Coupon Remove Start
+        function couponRemove() {
+            $.ajax({
+                type: "GET",
+                dataType: 'json',
+                url: "/coupon-remove",
+                success: function(data) {
+                    couponCalculation();
+                    $('#couponField').show();
+                    // Start Message
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                    if ($.isEmptyObject(data.error)) {
+
+                        Toast.fire({
+                            type: 'success',
+                            icon: 'success',
+                            title: data.success,
+                        })
+                    } else {
+
+                        Toast.fire({
+                            type: 'error',
+                            icon: 'error',
+                            title: data.error,
+                        })
+                    }
+                    // End Message
+                }
+            })
+        }
+        // Coupon Remove End
+    </script>
+
+    <!--  ////////////// End Apply Coupon ////////////// -->
 </body>
 
 </html>

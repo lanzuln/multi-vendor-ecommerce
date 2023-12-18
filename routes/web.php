@@ -4,7 +4,9 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\backend\BannerController;
 use App\Http\Controllers\backend\BrandController;
 use App\Http\Controllers\backend\CategoryController;
+use App\Http\Controllers\backend\CouponController;
 use App\Http\Controllers\backend\ProductController;
+use App\Http\Controllers\backend\ShippingAreaController;
 use App\Http\Controllers\backend\SliderController;
 use App\Http\Controllers\backend\SubCategoryController;
 use App\Http\Controllers\backend\VendorProductController;
@@ -75,10 +77,23 @@ Route::middleware(['auth', 'role:user'])->group(function () {
 
     Route::controller(CompareController::class)->group(function () {
         Route::get('/compare', 'AllCompare')->name('compare');
-        Route::get('/get-compare-product' , 'GetCompareProduct');
-        Route::get('/compare-remove/{id}' , 'CompareRemove');
+        Route::get('/get-compare-product', 'GetCompareProduct');
+        Route::get('/compare-remove/{id}', 'CompareRemove');
     });
 
+    Route::controller(CartController::class)->group(function () {
+        Route::get('/mycart', 'MyCart')->name('mycart');
+        Route::get('/get-cart-product', 'GetCartProduct');
+        Route::get('/cart-remove/{rowId}', 'CartRemove');
+        Route::get('/cart-decrement/{rowId}', 'CartDecrement');
+        Route::get('/cart-increment/{rowId}', 'CartIncrement');
+
+        /// Frontend Coupon Option
+        Route::post('/coupon-apply', [CartController::class, 'CouponApply']);
+        Route::get('/coupon-calculation', [CartController::class, 'CouponCalculation']);
+        Route::get('/coupon-remove', [CartController::class, 'CouponRemove']);
+
+    });
 });
 
 // ========= admin
@@ -171,7 +186,44 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::get('/edit/banner/{id}', 'EditBanner')->name('edit.banner');
         Route::post('/update/banner', 'UpdateBanner')->name('update.banner');
         Route::get('/delete/banner/{id}', 'DeleteBanner')->name('delete.banner');
+    });
 
+    // coupon controller
+    Route::controller(CouponController::class)->group(function () {
+        Route::get('/all/coupon', 'AllCoupon')->name('all.coupon');
+        Route::get('/add/coupon', 'AddCoupon')->name('add.coupon');
+        Route::post('/store/coupon', 'StoreCoupon')->name('store.coupon');
+        Route::get('/edit/coupon/{id}', 'EditCoupon')->name('edit.coupon');
+        Route::post('/update/coupon', 'UpdateCoupon')->name('update.coupon');
+        Route::get('/delete/coupon/{id}', 'DeleteCoupon')->name('delete.coupon');
+    });
+
+    Route::controller(ShippingAreaController::class)->group(function () {
+        // division
+        Route::get('/all/division', 'AllDivision')->name('all.division');
+        Route::get('/add/division', 'AddDivision')->name('add.division');
+        Route::post('/store/division', 'StoreDivision')->name('store.division');
+        Route::get('/edit/division/{id}', 'EditDivision')->name('edit.division');
+        Route::post('/update/division', 'UpdateDivision')->name('update.division');
+        Route::get('/delete/division/{id}', 'DeleteDivision')->name('delete.division');
+
+        // districts
+        Route::get('/all/district', 'AllDistrict')->name('all.district');
+        Route::get('/add/district', 'AddDistrict')->name('add.district');
+        Route::post('/store/district', 'StoreDistrict')->name('store.district');
+        Route::get('/edit/district/{id}', 'EditDistrict')->name('edit.district');
+        Route::post('/update/district', 'UpdateDistrict')->name('update.district');
+        Route::get('/delete/district/{id}', 'DeleteDistrict')->name('delete.district');
+
+        // state
+        Route::get('/all/state', 'AllState')->name('all.state');
+        Route::get('/add/state', 'AddState')->name('add.state');
+        Route::post('/store/state', 'StoreState')->name('store.state');
+        Route::get('/edit/state/{id}', 'EditState')->name('edit.state');
+        Route::post('/update/state', 'UpdateState')->name('update.state');
+        Route::get('/delete/state/{id}', 'DeleteState')->name('delete.state');
+
+        Route::get('/district/ajax/{division_id}', 'GetDistrict');
     });
 
 });
