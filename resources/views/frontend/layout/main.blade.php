@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/plugins/animate.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/main.css') }}?v=5.3" />
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/custome.css') }}" />
+
 </head>
 
 <body>
@@ -80,6 +81,7 @@
     <script src="{{ asset('frontend/assets/js/main.js') }}?v=5.3"></script>
     <script src="{{ asset('frontend/assets/js/shop.js') }}?v=5.3"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
     <script type="text/javascript">
         $.ajaxSetup({

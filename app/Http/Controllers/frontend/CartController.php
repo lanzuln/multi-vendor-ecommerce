@@ -5,6 +5,7 @@ namespace App\Http\Controllers\frontend;
 use Carbon\Carbon;
 use App\Models\Coupon;
 use App\Models\Product;
+use App\Models\ShipDivision;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -251,45 +252,34 @@ class CartController extends Controller {
 
     } // End Method
 
-
-
-    public function CheckoutCreate(){
+    public function CheckoutCreate() {
 
         if (Auth::check()) {
 
             if (Cart::total() > 0) {
 
-        $carts = Cart::content();
-        $cartQty = Cart::count();
-        $cartTotal = Cart::total();
+                $carts = Cart::content();
+                $cartQty = Cart::count();
+                $cartTotal = Cart::subtotal();
+                $divisions = ShipDivision::orderBy('division_name','ASC')->get();
 
-        return view('frontend.checkout.checkout_view',compact('carts','cartQty','cartTotal'));
+                return view('frontend.pages.checkout.checkout',compact('carts','cartQty','cartTotal','divisions'));
+
+            } else {
 
 
-            }else{
+                toastr()->error('Shopping At list One Product');
 
-            $notification = array(
-            'message' => 'Shopping At list One Product',
-            'alert-type' => 'error'
-        );
-
-        return redirect()->to('/')->with($notification);
+                return redirect()->to('/');
             }
 
+        } else {
 
 
-        }else{
+            toastr()->error('You Need to Login First');
 
-             $notification = array(
-            'message' => 'You Need to Login First',
-            'alert-type' => 'error'
-        );
-
-        return redirect()->route('login')->with($notification);
+            return redirect()->route('login');
         }
 
-
-
-
-    }// End Method
+    } // End Method
 }

@@ -1,24 +1,26 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\backend\BannerController;
+use App\Http\Controllers\VendorController;
+use App\Http\Controllers\user\CompareController;
+use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Controllers\backend\BrandController;
-use App\Http\Controllers\backend\CategoryController;
-use App\Http\Controllers\backend\CouponController;
-use App\Http\Controllers\backend\ProductController;
-use App\Http\Controllers\backend\ShippingAreaController;
-use App\Http\Controllers\backend\SliderController;
-use App\Http\Controllers\backend\SubCategoryController;
-use App\Http\Controllers\backend\VendorProductController;
 use App\Http\Controllers\frontend\CartController;
 use App\Http\Controllers\frontend\FrontendVendor;
 use App\Http\Controllers\frontend\homecontroller;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\user\CompareController;
 use App\Http\Controllers\user\WishlistController;
-use App\Http\Controllers\VendorController;
-use App\Http\Middleware\RedirectIfAuthenticated;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\backend\BannerController;
+use App\Http\Controllers\backend\CouponController;
+use App\Http\Controllers\backend\SliderController;
+use App\Http\Controllers\backend\ProductController;
+use App\Http\Controllers\backend\CategoryController;
+use App\Http\Controllers\frontend\CheckoutController;
+use App\Http\Controllers\backend\SubCategoryController;
+use App\Http\Controllers\backend\ShippingAreaController;
+use App\Http\Controllers\backend\VendorProductController;
+use App\Http\Controllers\user\StripeController;
 
 Route::controller(homecontroller::class)->group(function () {
     Route::get('/', 'index')->name('homePage');
@@ -56,6 +58,18 @@ Route::controller(FrontendVendor::class)->group(function () {
     Route::get('/vendor/details/{id}', 'vendor_detailed');
 });
 
+Route::controller(CartController::class)->group(function () {
+    Route::get('/mycart', 'MyCart')->name('mycart');
+    Route::get('/get-cart-product', 'GetCartProduct');
+    Route::get('/cart-remove/{rowId}', 'CartRemove');
+    Route::get('/cart-decrement/{rowId}', 'CartDecrement');
+    Route::get('/cart-increment/{rowId}', 'CartIncrement');
+
+    /// Frontend Coupon Option
+    Route::post('/coupon-apply', [CartController::class, 'CouponApply']);
+    Route::get('/coupon-calculation', [CartController::class, 'CouponCalculation']);
+    Route::get('/coupon-remove', [CartController::class, 'CouponRemove']);
+});
 // ====== user
 // Route::get('/login', [UserController::class, 'userLogin'])->name('login');
 Route::middleware(['auth', 'role:user'])->group(function () {
@@ -82,16 +96,22 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     });
 
     Route::controller(CartController::class)->group(function () {
-        Route::get('/mycart', 'MyCart')->name('mycart');
-        Route::get('/get-cart-product', 'GetCartProduct');
-        Route::get('/cart-remove/{rowId}', 'CartRemove');
-        Route::get('/cart-decrement/{rowId}', 'CartDecrement');
-        Route::get('/cart-increment/{rowId}', 'CartIncrement');
 
-        /// Frontend Coupon Option
-        Route::post('/coupon-apply', [CartController::class, 'CouponApply']);
-        Route::get('/coupon-calculation', [CartController::class, 'CouponCalculation']);
-        Route::get('/coupon-remove', [CartController::class, 'CouponRemove']);
+        // Checkout Page Route
+        Route::get('/checkout', [CartController::class, 'CheckoutCreate'])->name('checkout');
+    });
+
+    Route::controller(CheckoutController::class)->group(function(){
+        Route::get('/district-get/ajax/{division_id}' , 'DistrictGetAjax');
+        Route::get('/state-get/ajax/{district_id}' , 'StateGetAjax');
+
+        Route::post('/checkout/store' , 'CheckoutStore')->name('checkout.store');
+    });
+
+    Route::controller(StripeController::class)->group(function(){
+        Route::post('/stripe/order' , 'StripeOrder')->name('stripe.order');
+
+
 
     });
 });
