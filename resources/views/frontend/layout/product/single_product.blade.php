@@ -86,7 +86,7 @@
                                     <p class="font-lg">{{ $single_product->short_descp }}</p>
                                 </div>
 
-                                @if (($single_product->product_size && $single_product->product_color) == null)
+                                @if ($single_product->product_size == null)
                                 @else
                                     <div class="attr-detail attr-size mb-30">
                                         <strong class="mr-10" style="width:50px;">Size : </strong>
@@ -121,6 +121,8 @@
                                     </div>
                                     <div class="product-extra-link2">
                                         <input type="hidden" id="dproduct_id" value="{{ $single_product->id }}">
+                                        <input type="hidden" id="vproduct_id" value="{{ $single_product->vendor_id }}">
+
                                         <button type="submit" class="button button-add-to-cart"
                                             onclick="addToCartDetails()"><i class="fi-rs-shopping-cart"></i>Add to
                                             cart</button>
