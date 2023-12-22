@@ -81,6 +81,7 @@
     <script src="{{ asset('frontend/assets/js/main.js') }}?v=5.3"></script>
     <script src="{{ asset('frontend/assets/js/shop.js') }}?v=5.3"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ asset('backendAdmin/assets/js/validate.min.js') }}"></script>
 
 
     <script type="text/javascript">

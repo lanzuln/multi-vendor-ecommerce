@@ -2,7 +2,7 @@
 @section('body')
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <main class="main">
-        <form method="post" action="{{ route('checkout.store') }}">
+        <form method="post" action="{{ route('checkout.store') }}" id='myForm'>
             @csrf
             <div class="page-header breadcrumb-wrap">
                 <div class="container">
@@ -56,8 +56,8 @@
                                     </div>
                                 </div>
                                 <div class="form-group col-lg-6">
-                                    <input required="" type="text" name="shipping_phone"
-                                        value="{{ Auth::user()->phone }}">
+                                    <input type="text" name="shipping_phone"
+                                        value="{{ Auth::user()->phone }}" class="form-control">
                                 </div>
                             </div>
 
@@ -71,7 +71,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group col-lg-6">
-                                    <input required="" type="text" name="post_code" placeholder="Post Code *">
+                                    <input  type="text" name="post_code" placeholder="Post Code *" class="form-control">
                                 </div>
                             </div>
 
@@ -87,21 +87,14 @@
                                 </div>
 
                                 <div class="form-group col-lg-6">
-                                    <input required="" type="text" name="shipping_address" placeholder="Address *"
-                                        value="{{ Auth::user()->address }}">
+                                    <input  type="text" name="shipping_address" placeholder="Address *"
+                                        value="{{ Auth::user()->address }}" class="form-control">
                                 </div>
                             </div>
 
-
-
-
-
                             <div class="form-group mb-30">
-                                <textarea rows="5" placeholder="Additional information" name="notes"></textarea>
+                                <textarea rows="5" class="form-control" placeholder="Additional information" name="notes"></textarea>
                             </div>
-
-
-
 
                         </div>
                     </div>
@@ -253,6 +246,73 @@
     </main>
     <script type="text/javascript">
         $(document).ready(function() {
+            $('#myForm').validate({
+                    rules: {
+                        shipping_name: {
+                            required: true,
+                        },
+                        shipping_email: {
+                            required: true,
+                        },
+                        division_id: {
+                            required: true,
+                        },
+                        shipping_phone: {
+                            required: true,
+                        },
+                        district_id: {
+                            required: true,
+                        },
+                        post_code: {
+                            required: true,
+                        },
+                        state_id: {
+                            required: true,
+                        },
+                        notes: {
+                            required: true,
+                        },
+                    },
+                    messages: {
+                        shipping_name: {
+                            required: 'Please Enter shipping Name',
+                        },
+                        shipping_email: {
+                            required: 'Please Enter shipping email',
+                        },
+                        division_id: {
+                            required: 'Please Select division',
+                        },
+                        shipping_phone: {
+                            required: 'Please enter phone',
+                        },
+                        district_id: {
+                            required: 'Please Select district',
+                        },
+                        post_code: {
+                            required: 'Please Enter post code',
+                        },
+                        state_id: {
+                            required: 'Please select state',
+                        },
+                        notes: {
+                            required: 'Please Enter some note',
+                        },
+                    },
+                    errorElement: 'span',
+                    errorPlacement: function(error, element) {
+                        error.addClass('invalid-feedback');
+                        element.closest('.form-group').append(error);
+                    },
+                    highlight: function(element, errorClass, validClass) {
+                        $(element).addClass('is-invalid');
+                    },
+                    unhighlight: function(element, errorClass, validClass) {
+                        $(element).removeClass('is-invalid');
+                    },
+                });
+        })
+        $(document).ready(function() {
             $('select[name="division_id"]').on('change', function() {
                 var division_id = $(this).val();
                 if (division_id) {
@@ -298,6 +358,10 @@
                     alert('danger');
                 }
             });
+
+
         });
+
+
     </script>
 @endsection
