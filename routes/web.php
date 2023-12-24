@@ -5,16 +5,19 @@ use App\Http\Controllers\backend\BannerController;
 use App\Http\Controllers\backend\BrandController;
 use App\Http\Controllers\backend\CategoryController;
 use App\Http\Controllers\backend\CouponController;
+use App\Http\Controllers\backend\OrderController;
 use App\Http\Controllers\backend\ProductController;
 use App\Http\Controllers\backend\ShippingAreaController;
 use App\Http\Controllers\backend\SliderController;
 use App\Http\Controllers\backend\SubCategoryController;
+use App\Http\Controllers\backend\VendorOrderController;
 use App\Http\Controllers\backend\VendorProductController;
 use App\Http\Controllers\frontend\CartController;
 use App\Http\Controllers\frontend\CheckoutController;
 use App\Http\Controllers\frontend\FrontendVendor;
 use App\Http\Controllers\frontend\homecontroller;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\user\AllUserController;
 use App\Http\Controllers\user\CompareController;
 use App\Http\Controllers\user\StripeController;
 use App\Http\Controllers\user\WishlistController;
@@ -111,6 +114,25 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     Route::controller(StripeController::class)->group(function () {
         Route::post('/stripe/order', 'StripeOrder')->name('stripe.order');
         Route::post('/cash/order', 'CashOrder')->name('cash.order');
+
+    });
+
+    Route::controller(AllUserController::class)->group(function () {
+        Route::get('/user/account/page', 'UserAccount')->name('user.account.page');
+        Route::get('/user/change/password', 'UserChangePassword')->name('user.change.password');
+
+        Route::get('/user/order/page', 'UserOrderPage')->name('user.order.page');
+
+        Route::get('/user/order_details/{order_id}', 'UserOrderDetails');
+        Route::get('/user/invoice_download/{order_id}', 'UserOrderInvoice');
+
+        Route::post('/return/order/{order_id}', 'ReturnOrder')->name('return.order');
+
+        Route::get('/return/order/page', 'ReturnOrderPage')->name('return.order.page');
+
+        // Order Tracking
+        Route::get('/user/track/order', 'UserTrackOrder')->name('user.track.order');
+        Route::post('/order/tracking', 'OrderTracking')->name('order.tracking');
 
     });
 });
@@ -245,12 +267,33 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::get('/district/ajax/{division_id}', 'GetDistrict');
     });
 
+    // Admin Order All Route
+    Route::controller(OrderController::class)->group(function () {
+        Route::get('/pending/order', 'PendingOrder')->name('pending.order');
+        Route::get('/admin/order/details/{order_id}', 'AdminOrderDetails')->name('admin.order.details');
+
+        Route::get('/admin/confirmed/order', 'AdminConfirmedOrder')->name('admin.confirmed.order');
+
+        Route::get('/admin/processing/order', 'AdminProcessingOrder')->name('admin.processing.order');
+
+        Route::get('/admin/delivered/order', 'AdminDeliveredOrder')->name('admin.delivered.order');
+
+        Route::get('/pending/confirm/{order_id}', 'PendingToConfirm')->name('pending-confirm');
+        Route::get('/confirm/processing/{order_id}', 'ConfirmToProcess')->name('confirm-processing');
+
+        Route::get('/processing/delivered/{order_id}', 'ProcessToDelivered')->name('processing-delivered');
+
+        Route::get('/admin/invoice/download/{order_id}', 'AdminInvoiceDownload')->name('admin.invoice.download');
+
+    });
+
 });
 
 // ======vendor
 Route::get('/vendor/login', [VendorController::class, 'vendorLogin'])->name('vendor.login')->middleware(RedirectIfAuthenticated::class);
 Route::get('/become/vendor', [VendorController::class, 'become_vendor'])->name('become_vendor');
 Route::post('/vendor/register', [VendorController::class, 'vendorRegister'])->name('vendorRegister');
+
 Route::middleware(['auth', 'role:vendor'])->group(function () {
     Route::controller(VendorController::class)->group(function () {
         Route::get('/vendor/dashboard', 'dashboard')->name('vendor.dashobard');
@@ -280,6 +323,11 @@ Route::middleware(['auth', 'role:vendor'])->group(function () {
         Route::get('/vendor/product/active/{id}', 'productActive')->name('vendor.product.active');
 
         Route::get('/subcategory/vendor/ajax/{category_id}', 'GetVendorSubCategory');
+
+    });
+    // Brand All Route
+    Route::controller(VendorOrderController::class)->group(function () {
+        Route::get('/vendor/order', 'VendorOrder')->name('vendor.order');
 
     });
 });

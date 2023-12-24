@@ -57,8 +57,8 @@ class UserController extends Controller {
                 'address' => $request->address,
             ]);
         }
-        toastr()->success('Profile update successfull');
-        return redirect('/dashboard');
+        toastr()->success('User Profile update successfully');
+        return back();
 
     }
 
@@ -70,7 +70,7 @@ class UserController extends Controller {
 
         if (!Hash::check($request->old_password, Auth::user()->password)) {
 
-            return back()->with("error_msg", "Old Password Doesn't Match!!");
+            return back()->with("error", "Old Password Doesn't Match!!");
         }
 
         // Update The new password
@@ -80,7 +80,7 @@ class UserController extends Controller {
         ]);
 
         toastr()->success('Password Changed Successfully');
-        return redirect('/dashboard');
+        return redirect()->back();
     }
 
 }

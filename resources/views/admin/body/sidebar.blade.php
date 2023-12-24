@@ -134,6 +134,33 @@
 
             </ul>
         </li>
+        {{-- order managament  --}}
+        <li>
+            <a href="javascript:;" class="has-arrow">
+                <div class="parent-icon"><i class='bx bx-cart'></i>
+                </div>
+                <div class="menu-title">Order Manage </div>
+            </a>
+            <ul>
+                <li> <a href="{{ route('pending.order') }}"><i class="bx bx-right-arrow-alt"></i>Pending
+                        Order</a>
+                </li>
+                <li> <a href="{{ route('admin.confirmed.order') }}"><i class="bx bx-right-arrow-alt"></i>Confirmed
+                        Order</a>
+                </li>
+                <li> <a href="{{ route('admin.processing.order') }}"><i class="bx bx-right-arrow-alt"></i>Processing
+                        Order</a>
+                </li>
+                <li> <a href="{{ route('admin.delivered.order') }}"><i class="bx bx-right-arrow-alt"></i>Delivered
+                        Order</a>
+                </li>
+
+
+            </ul>
+        </li>
+
+
+
 
         <li class="menu-label">Vendor management</li>
 
@@ -144,7 +171,8 @@
                 <div class="menu-title">Vendor management</div>
             </a>
             <ul>
-                <li> <a href="{{ route('inactive.vendor') }}"><i class="bx bx-right-arrow-alt"></i>Inactive vendor</a>
+                <li> <a href="{{ route('inactive.vendor') }}"><i class="bx bx-right-arrow-alt"></i>Inactive
+                        vendor</a>
                 </li>
                 <li> <a href="{{ route('active.vendor') }}"><i class="bx bx-right-arrow-alt"></i>Active vendor</a>
                 </li>
