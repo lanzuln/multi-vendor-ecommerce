@@ -1,4 +1,4 @@
-@extends('vendor.layout.main');
+@extends('vendor.layout.main')
 @section('body')
 <div class="page-content">
 				<!--breadcrumb-->

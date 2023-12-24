@@ -36,7 +36,7 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table" style="background:#ddd;font-weight: 600;" >
+                <table class="dataTable" style="background:#ddd;font-weight: 600;" >
                     <thead>
                         <tr>
                             <th>Sl</th>

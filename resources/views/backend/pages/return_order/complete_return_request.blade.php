@@ -1,5 +1,4 @@
-@extends('admin.layout.main');
-@section('body')@extends('admin.layout.main');
+@extends('admin.layout.main')
 @section('body')
 <div class="page-content">
 				<!--breadcrumb-->
@@ -26,7 +25,7 @@
 				<div class="card">
 					<div class="card-body">
 						<div class="table-responsive">
-							<table id="example" class="table table-striped table-bordered" style="width:100%">
+							<table id="dataTable" class="table table-striped table-bordered" style="width:100%">
 								<thead>
 			<tr>
 				<th>Sl</th>

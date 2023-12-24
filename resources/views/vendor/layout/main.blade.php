@@ -1,37 +1,39 @@
 <!doctype html>
 <html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!--favicon-->
+        <link rel="icon" href="{{ asset('backendAdmin/assets/images/favicon-32x32.png') }}" type="image/png" />
+        <!--plugins-->
+        <link href="{{ asset('backendAdmin/assets/plugins/vectormap/jquery-jvectormap-2.0.2.css') }}" rel="stylesheet" />
+        <link href="{{ asset('backendAdmin/assets/plugins/simplebar/css/simplebar.css') }}" rel="stylesheet" />
+        <link href="{{ asset('backendAdmin/assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css') }}"
+            rel="stylesheet" />
+        <link href="{{ asset('backendAdmin/assets/plugins/metismenu/css/metisMenu.min.css') }}" rel="stylesheet" />
+        <!-- loader-->
+        <link href="{{ asset('backendAdmin/assets/css/pace.min.css') }}" rel="stylesheet" />
+        <script src="{{ asset('backendAdmin/assets/js/pace.min.js') }}"></script>
+        <!-- Bootstrap CSS -->
+        <link href="{{ asset('backendAdmin/assets/css/bootstrap.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('backendAdmin/assets/css/app.css') }}" rel="stylesheet">
+        <link href="{{ asset('backendAdmin/assets/css/icons.css') }}" rel="stylesheet">
+        <link href="{{ asset('backendAdmin/assets/plugins/datatable/css/dataTables.bootstrap5.min.css') }}"
+            rel="stylesheet" />
+        <!-- Theme Style CSS -->
+        <link rel="stylesheet" href="{{ asset('backendAdmin/assets/css/dark-theme.css') }}" />
+        <link rel="stylesheet" href="{{ asset('backendAdmin/assets/css/semi-dark.css') }}" />
+        <link rel="stylesheet" href="{{ asset('backendAdmin/assets/css/header-colors.css') }}" />
+        <link href="{{ asset('backendAdmin/assets/plugins/input-tags/css/tagsinput.css') }}" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"/>
 
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!--favicon-->
-    <link rel="icon" href="{{ asset('backendAdmin/assets/images/favicon-32x32.png') }}" type="image/png" />
-    <!--plugins-->
-    <link href="{{ asset('backendAdmin/assets/plugins/vectormap/jquery-jvectormap-2.0.2.css') }}" rel="stylesheet" />
-    <link href="{{ asset('backendAdmin/assets/plugins/simplebar/css/simplebar.css') }}" rel="stylesheet" />
-    <link href="{{ asset('backendAdmin/assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css') }}"
-        rel="stylesheet" />
-    <link href="{{ asset('backendAdmin/assets/plugins/metismenu/css/metisMenu.min.css') }}" rel="stylesheet" />
-    <!-- loader-->
-    <link href="{{ asset('backendAdmin/assets/css/pace.min.css') }}" rel="stylesheet" />
-    <script src="{{ asset('backendAdmin/assets/js/pace.min.js') }}"></script>
-    <!-- Bootstrap CSS -->
-    <link href="{{ asset('backendAdmin/assets/css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('backendAdmin/assets/css/app.css') }}" rel="stylesheet">
-    <link href="{{ asset('backendAdmin/assets/css/icons.css') }}" rel="stylesheet">
-    <link href="{{ asset('backendAdmin/assets/plugins/datatable/css/dataTables.bootstrap5.min.css') }}"/>
-    <!-- Theme Style CSS -->
-    <link rel="stylesheet" href="{{ asset('backendAdmin/assets/css/dark-theme.css') }}" />
-    <link rel="stylesheet" href="{{ asset('backendAdmin/assets/css/semi-dark.css') }}" />
-    <link rel="stylesheet" href="{{ asset('backendAdmin/assets/css/header-colors.css') }}" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" />
-    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
-    <link href="{{ asset('backendAdmin/assets/plugins/input-tags/css/tagsinput.css') }}" rel="stylesheet" />
-    <link rel="stylesheet" href="{{ asset('backendAdmin/assets/css/custome.css') }}" />
-    <title>Rukada - Responsive Bootstrap 5 Admin Template</title>
-</head>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" />
+
+        <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="{{ asset('backendAdmin/assets/css/custome.css') }}" />
+        <title>Rukada - Responsive Bootstrap 5 Admin Template</title>
+    </head>
 
 <body>
     <!--wrapper-->
@@ -64,8 +66,9 @@
     <!--end wrapper-->
     <!-- Bootstrap JS -->
     <script src="{{ asset('backendAdmin/assets/js/bootstrap.bundle.min.js') }}"></script>
-    <!--plugins-->
+    <!-- Bootstrap JS -->
     <script src="{{ asset('backendAdmin/assets/js/jquery.min.js') }}"></script>
+    <!--plugins-->
     <script src="{{ asset('backendAdmin/assets/plugins/simplebar/js/simplebar.min.js') }}"></script>
     <script src="{{ asset('backendAdmin/assets/plugins/metismenu/js/metisMenu.min.js') }}"></script>
     <script src="{{ asset('backendAdmin/assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js') }}"></script>
@@ -78,17 +81,30 @@
     <script src="{{ asset('backendAdmin/assets/plugins/jquery-knob/jquery.knob.js') }}"></script>
     <script src="{{ asset('backendAdmin/assets/plugins/datatable/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('backendAdmin/assets/js/validate.min.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="{{ asset('backendAdmin/assets/plugins/input-tags/js/tagsinput.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+
+
+
+
+    {{-- // <!--app JS--> --}}
+    <script src="{{ asset('backendAdmin/assets/js/index.js') }}"></script>
+    <script src="{{ asset('backendAdmin/assets/js/code.js') }}"></script>
+    <!--app JS-->
+
     <script>
-         $(document).ready(function() {
+        $(document).ready(function() {
             $('#summernote').summernote({
                 placeholder: 'Description here',
                 tabsize: 2,
                 height: 200
             });
 
+
+        });
+
+        $(document).ready(function() {
             $('#dataTable').DataTable();
         });
 
@@ -122,10 +138,9 @@
 
         });
     </script>
-    <script src="{{ asset('backendAdmin/assets/js/index.js') }}"></script>
-    <!--app JS-->
-    <script src="{{ asset('backendAdmin/assets/js/app.js') }}"></script>
-    @stack('myScript')
+
+@stack('myScript')
+<script src="{{ asset('backendAdmin/assets/js/app.js') }}"></script>
 </body>
 
 </html>

@@ -1,4 +1,4 @@
-@extends('admin.layout.main');
+@extends('admin.layout.main')
 @section('body')
     <div class="page-content">
         <!--breadcrumb-->
