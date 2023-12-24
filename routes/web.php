@@ -1,29 +1,30 @@
 <?php
 
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\backend\BannerController;
-use App\Http\Controllers\backend\BrandController;
-use App\Http\Controllers\backend\CategoryController;
-use App\Http\Controllers\backend\CouponController;
-use App\Http\Controllers\backend\OrderController;
-use App\Http\Controllers\backend\ProductController;
-use App\Http\Controllers\backend\ShippingAreaController;
-use App\Http\Controllers\backend\SliderController;
-use App\Http\Controllers\backend\SubCategoryController;
-use App\Http\Controllers\backend\VendorOrderController;
-use App\Http\Controllers\backend\VendorProductController;
-use App\Http\Controllers\frontend\CartController;
-use App\Http\Controllers\frontend\CheckoutController;
-use App\Http\Controllers\frontend\FrontendVendor;
-use App\Http\Controllers\frontend\homecontroller;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\VendorController;
+use App\Http\Controllers\user\StripeController;
 use App\Http\Controllers\user\AllUserController;
 use App\Http\Controllers\user\CompareController;
-use App\Http\Controllers\user\StripeController;
-use App\Http\Controllers\user\WishlistController;
-use App\Http\Controllers\VendorController;
 use App\Http\Middleware\RedirectIfAuthenticated;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\backend\BrandController;
+use App\Http\Controllers\backend\OrderController;
+use App\Http\Controllers\frontend\CartController;
+use App\Http\Controllers\frontend\FrontendVendor;
+use App\Http\Controllers\frontend\homecontroller;
+use App\Http\Controllers\user\WishlistController;
+use App\Http\Controllers\backend\BannerController;
+use App\Http\Controllers\backend\CouponController;
+use App\Http\Controllers\backend\ReturnController;
+use App\Http\Controllers\backend\SliderController;
+use App\Http\Controllers\backend\ProductController;
+use App\Http\Controllers\backend\CategoryController;
+use App\Http\Controllers\frontend\CheckoutController;
+use App\Http\Controllers\backend\SubCategoryController;
+use App\Http\Controllers\backend\VendorOrderController;
+use App\Http\Controllers\backend\ShippingAreaController;
+use App\Http\Controllers\backend\VendorProductController;
 
 Route::controller(homecontroller::class)->group(function () {
     Route::get('/', 'index')->name('homePage');
@@ -286,6 +287,15 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::get('/admin/invoice/download/{order_id}', 'AdminInvoiceDownload')->name('admin.invoice.download');
 
     });
+    // Return Order All Route
+    Route::controller(ReturnController::class)->group(function () {
+        Route::get('/return/request', 'ReturnRequest')->name('return.request');
+
+        Route::get('/return/request/approved/{order_id}', 'ReturnRequestApproved')->name('return.request.approved');
+
+        Route::get('/complete/return/request', 'CompleteReturnRequest')->name('complete.return.request');
+
+    });
 
 });
 
@@ -328,6 +338,10 @@ Route::middleware(['auth', 'role:vendor'])->group(function () {
     // Brand All Route
     Route::controller(VendorOrderController::class)->group(function () {
         Route::get('/vendor/order', 'VendorOrder')->name('vendor.order');
+        Route::get('/vendor/return/order', 'VendorReturnOrder')->name('vendor.return.order');
+
+        Route::get('/vendor/complete/return/order', 'VendorCompleteReturnOrder')->name('vendor.complete.return.order');
+        Route::get('/vendor/order/details/{order_id}', 'VendorOrderDetails')->name('vendor.order.details');
 
     });
 });

@@ -38,8 +38,26 @@
                 <ul>
                     <li> <a href="{{ route('vendor.all.product') }}"><i class="bx bx-right-arrow-alt"></i>All Product</a></li>
                     <li> <a href="{{ route('vendor.create.product') }}"><i class="bx bx-right-arrow-alt"></i>Add Product</a></li>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:;" class="has-arrow">
+                    <div class="parent-icon"><i class="bx bx-cart"></i>
+                    </div>
+                    <div class="menu-title"> Order Manage </div>
+                </a>
+                <ul>
                     <li> <a href="{{ route('vendor.order') }}"><i class="bx bx-right-arrow-alt"></i>Vendor Order</a>
                     </li>
+
+                    <li> <a href="{{ route('vendor.return.order') }}"><i class="bx bx-right-arrow-alt"></i>Return Order</a>
+                    </li>
+
+                    <li> <a href="{{ route('vendor.complete.return.order') }}"><i class="bx bx-right-arrow-alt"></i>Complete Return Order</a>
+                    </li>
+
+
                 </ul>
             </li>
         @else
