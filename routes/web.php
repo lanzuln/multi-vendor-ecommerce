@@ -16,11 +16,13 @@ use App\Http\Controllers\frontend\homecontroller;
 use App\Http\Controllers\user\WishlistController;
 use App\Http\Controllers\backend\BannerController;
 use App\Http\Controllers\backend\CouponController;
+use App\Http\Controllers\backend\ReportController;
 use App\Http\Controllers\backend\ReturnController;
 use App\Http\Controllers\backend\SliderController;
 use App\Http\Controllers\backend\ProductController;
 use App\Http\Controllers\backend\CategoryController;
 use App\Http\Controllers\frontend\CheckoutController;
+use App\Http\Controllers\backend\ActiveUserController;
 use App\Http\Controllers\backend\SubCategoryController;
 use App\Http\Controllers\backend\VendorOrderController;
 use App\Http\Controllers\backend\ShippingAreaController;
@@ -294,6 +296,25 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::get('/return/request/approved/{order_id}', 'ReturnRequestApproved')->name('return.request.approved');
 
         Route::get('/complete/return/request', 'CompleteReturnRequest')->name('complete.return.request');
+
+    });
+    // Report All Route
+    Route::controller(ReportController::class)->group(function () {
+
+        Route::get('/report/view', 'ReportView')->name('report.view');
+        Route::post('/search/by/date', 'SearchByDate')->name('search-by-date');
+        Route::post('/search/by/month', 'SearchByMonth')->name('search-by-month');
+        Route::post('/search/by/year', 'SearchByYear')->name('search-by-year');
+
+        Route::get('/order/by/user', 'OrderByUser')->name('order.by.user');
+        Route::post('/search/by/user', 'SearchByUser')->name('search-by-user');
+
+    });
+     // Active user and vendor All Route
+     Route::controller(ActiveUserController::class)->group(function () {
+
+        Route::get('/all/user', 'AllUser')->name('all-user');
+        Route::get('/all/vendor', 'AllVendor')->name('all-vendor');
 
     });
 

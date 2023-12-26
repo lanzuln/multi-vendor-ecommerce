@@ -65,9 +65,9 @@
         {{-- end footer  --}}
     </div>
     <!--end wrapper-->
+    <script src="{{ asset('backendAdmin/assets/js/jquery.min.js') }}"></script>
     <script src="{{ asset('backendAdmin/assets/js/bootstrap.bundle.min.js') }}"></script>
     <!-- Bootstrap JS -->
-    <script src="{{ asset('backendAdmin/assets/js/jquery.min.js') }}"></script>
     <!--plugins-->
     <script src="{{ asset('backendAdmin/assets/plugins/simplebar/js/simplebar.min.js') }}"></script>
     <script src="{{ asset('backendAdmin/assets/plugins/metismenu/js/metisMenu.min.js') }}"></script>
@@ -89,8 +89,9 @@
 
 
     {{-- // <!--app JS--> --}}
-    <script src="{{ asset('backendAdmin/assets/js/index.js') }}"></script>
+    {{-- <script src="{{ asset('backendAdmin/assets/js/index.js') }}"></script> --}}
     <script src="{{ asset('backendAdmin/assets/js/code.js') }}"></script>
+    <script src="{{ asset('backendAdmin/assets/js/app.js') }}"></script>
 
     <script>
         // summernote
@@ -108,7 +109,6 @@
 
     </script>
     @stack('myScript')
-    <script src="{{ asset('backendAdmin/assets/js/app.js') }}"></script>
 </body>
 
 </html>
