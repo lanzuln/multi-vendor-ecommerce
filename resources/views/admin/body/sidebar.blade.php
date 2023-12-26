@@ -174,6 +174,7 @@
                 </li>
             </ul>
         </li>
+
         {{-- report view  --}}
         <li>
             <a href="javascript:;" class="has-arrow">
@@ -193,7 +194,21 @@
             </ul>
         </li>
 
+        {{-- User Manage  --}}
+        <li>
+            <a href="javascript:;" class="has-arrow">
+                <div class="parent-icon"><i class="lni lni-slideshare"></i>
+                </div>
+                <div class="menu-title">User Manage</div>
+            </a>
+            <ul>
+                <li> <a href="{{ route('all-user') }}"><i class="bx bx-right-arrow-alt"></i>All User</a>
+                </li>
 
+                <li> <a href="{{ route('all-vendor') }}"><i class="bx bx-right-arrow-alt"></i>All Vendor</a>
+                </li>
+            </ul>
+        </li>
 
 
         <li class="menu-label">Vendor management</li>
@@ -212,7 +227,10 @@
                 </li>
             </ul>
         </li>
+
+
         <li class="menu-label">UI Elements</li>
+
 
     </ul>
     <!--end navigation-->

@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('join_date')->nullable();
             $table->text('short_desc')->nullable();
             $table->enum('role',['admin','vendor','user'])->default('user');
+            $table->string('last_seen',255)->nullable();
             $table->enum('status',['active','inactive'])->default('active');
             $table->rememberToken();
             $table->timestamps();
