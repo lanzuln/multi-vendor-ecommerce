@@ -69,9 +69,31 @@
                                             <h2><a
                                                     href="{{ url('/produt/details/' . $item->id . '/' . $item->product_slug) }}">{{ $item->product_name }}</a>
                                             </h2>
-                                            <div class="product-rate d-inline-block">
+                                            @php
+                                            $reviewcount = App\Models\Review::where('product_id', $item->id)
+                                                ->where('status', 1)
+                                                ->latest()
+                                                ->get();
+
+                                            $avarage = App\Models\Review::where('product_id', $item->id)
+                                                ->where('status', 1)
+                                                ->avg('rating');
+                                        @endphp
+
+                                        <div class="product-rate d-inline-block">
+                                            @if ($avarage == 0)
+                                            @elseif($avarage == 1 || $avarage < 2)
+                                                <div class="product-rating" style="width: 20%"></div>
+                                            @elseif($avarage == 2 || $avarage < 3)
+                                                <div class="product-rating" style="width: 40%"></div>
+                                            @elseif($avarage == 3 || $avarage < 4)
+                                                <div class="product-rating" style="width: 60%"></div>
+                                            @elseif($avarage == 4 || $avarage < 5)
                                                 <div class="product-rating" style="width: 80%"></div>
-                                            </div>
+                                            @elseif($avarage == 5 || $avarage < 5)
+                                                <div class="product-rating" style="width: 100%"></div>
+                                            @endif
+                                        </div>
 
                                             @if ($item->discount_price == null)
                                                 <div class="product-price mt-10 mb-15">

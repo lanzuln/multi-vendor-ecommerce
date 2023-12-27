@@ -1,5 +1,9 @@
 @extends('frontend.layout.main')
 @section('body')
+
+@section('title')
+    Home Easy Multi Vendor Shop
+@endsection
     @include('frontend.components.home.home-slider')
     <!--End hero slider-->
 

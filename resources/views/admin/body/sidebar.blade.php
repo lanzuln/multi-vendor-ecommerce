@@ -228,6 +228,25 @@
 
             </ul>
         </li>
+        {{-- Review Manage  --}}
+        <li>
+            <a href="javascript:;" class="has-arrow">
+                <div class="parent-icon"><i class="lni lni-indent-increase"></i>
+                </div>
+                <div class="menu-title">Review Manage</div>
+            </a>
+            <ul>
+                <li> <a href="{{ route('pending.review') }}"><i class="bx bx-right-arrow-alt"></i>Pending
+                        Review</a>
+                </li>
+
+                <li> <a href="{{ route('publish.review') }}"><i class="bx bx-right-arrow-alt"></i>Publish
+                        Review</a>
+                </li>
+
+
+            </ul>
+        </li>
 
 
         <li class="menu-label">Vendor management</li>
