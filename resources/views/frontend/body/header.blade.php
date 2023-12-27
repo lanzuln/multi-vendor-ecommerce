@@ -66,12 +66,14 @@
             </div>
         </div>
     </div>
+    @php
+        $setting = App\Models\SiteSetting::find(1);
+    @endphp
     <div class="header-middle header-middle-ptb-1 d-none d-lg-block">
         <div class="container">
             <div class="header-wrap">
                 <div class="logo logo-width-1">
-                    <a href="index.html"><img src="{{ asset('frontend/assets/imgs/theme/logo.svg') }}"
-                            alt="logo" /></a>
+                    <a href="index.html"><img src="{{ asset($setting->logo)   }}" alt="logo" /></a>
                 </div>
                 <div class="header-right">
                     <div class="search-style-2">
@@ -120,7 +122,7 @@
                                     <img class="svgInject" alt="Nest"
                                         src="{{ asset('frontend/assets/imgs/theme/icons/icon-compare.svg') }}" />
                                     @auth
-                                        <span class="pro-count blue" id="compareQty"></span>
+                                        <span class="pro-count blue" id="compareQty">0</span>
                                     @endauth
                                 </a>
                                 <a href="{{ route('compare') }}"><span class="lable ml-0">Compare</span></a>
@@ -131,7 +133,7 @@
                                     <img class="svgInject" alt="Nest"
                                         src="{{ asset('frontend/assets/imgs/theme/icons/icon-heart.svg') }}" />
                                     @auth
-                                        <span class="pro-count blue" id="wishQty"> </span>
+                                        <span class="pro-count blue" id="wishQty">0</span>
 
                                     @endauth
                                 </a>
@@ -142,7 +144,7 @@
                                     <img alt="Nest"
                                         src="{{ asset('frontend/assets/imgs/theme/icons/icon-cart.svg') }}" />
 
-                                        <span class="pro-count blue" id="cartQty"> </span>
+                                    <span class="pro-count blue" id="cartQty"> </span>
 
 
                                 </a>
