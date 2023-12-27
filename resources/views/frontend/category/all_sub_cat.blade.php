@@ -1,5 +1,8 @@
 @extends('frontend.layout.main')
 @section('body')
+@section('title')
+    {{ $Sub_categories_name->category->category_name  }} >  {{ $Sub_categories_name->name  }} Subcategory
+@endsection
     <div class="page-header mt-30 mb-50">
         <div class="container">
             <div class="archive-header">

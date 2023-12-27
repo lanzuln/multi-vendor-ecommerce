@@ -1,5 +1,8 @@
 @extends('frontend.layout.main')
 @section('body')
+@section('title')
+   Compare Page
+@endsection
 
     <div class="page-header breadcrumb-wrap">
         <div class="container">

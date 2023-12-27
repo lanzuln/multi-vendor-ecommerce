@@ -1,5 +1,8 @@
 @extends('frontend.layout.main')
 @section('body')
+@section('title')
+    {{ $single_product->product_name }}
+@endsection
 
     <div class="page-header breadcrumb-wrap">
         <div class="container">

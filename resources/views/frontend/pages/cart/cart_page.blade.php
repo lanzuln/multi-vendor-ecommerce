@@ -1,5 +1,8 @@
 @extends('frontend.layout.main')
 @section('body')
+@section('title')
+  MyCart Page
+@endsection
     <div class="page-header breadcrumb-wrap">
         <div class="container">
             <div class="breadcrumb">

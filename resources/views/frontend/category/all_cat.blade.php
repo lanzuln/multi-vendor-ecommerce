@@ -1,5 +1,9 @@
 @extends('frontend.layout.main')
 @section('body')
+@section('title')
+   {{ $cat_name->category_name }} Category
+@endsection
+
     <div class="page-header mt-30 mb-50">
         <div class="container">
             <div class="archive-header">
