@@ -4,7 +4,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\VendorController;
+use App\Http\Controllers\user\ReviewController;
 use App\Http\Controllers\user\StripeController;
+use App\Http\Controllers\backend\BlogController;
 use App\Http\Controllers\user\AllUserController;
 use App\Http\Controllers\user\CompareController;
 use App\Http\Middleware\RedirectIfAuthenticated;
@@ -28,6 +30,7 @@ use App\Http\Controllers\backend\VendorOrderController;
 use App\Http\Controllers\backend\ShippingAreaController;
 use App\Http\Controllers\backend\VendorProductController;
 
+// Frontent route
 Route::controller(homecontroller::class)->group(function () {
     Route::get('/', 'index')->name('homePage');
     Route::get('/produt/details/{id}/{slug}', 'product_detailed');
@@ -76,6 +79,16 @@ Route::controller(CartController::class)->group(function () {
     Route::get('/coupon-calculation', [CartController::class, 'CouponCalculation']);
     Route::get('/coupon-remove', [CartController::class, 'CouponRemove']);
 });
+
+// Frontend Blog Post All Route
+Route::controller(BlogController::class)->group(function () {
+
+    Route::get('/blog', 'AllBlog')->name('home.blog');
+    Route::get('/post/details/{id}/{slug}', 'BlogDetails');
+    Route::get('/post/category/{id}/{slug}', 'BlogPostCategory');
+
+});
+
 // ====== user
 // Route::get('/login', [UserController::class, 'userLogin'])->name('login');
 Route::middleware(['auth', 'role:user'])->group(function () {
@@ -136,6 +149,13 @@ Route::middleware(['auth', 'role:user'])->group(function () {
         // Order Tracking
         Route::get('/user/track/order', 'UserTrackOrder')->name('user.track.order');
         Route::post('/order/tracking', 'OrderTracking')->name('order.tracking');
+
+    });
+
+    // Frontend Blog Post All Route
+    Route::controller(ReviewController::class)->group(function () {
+
+        Route::post('/store/review', 'StoreReview')->name('store.review');
 
     });
 });
@@ -310,13 +330,53 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::post('/search/by/user', 'SearchByUser')->name('search-by-user');
 
     });
-     // Active user and vendor All Route
-     Route::controller(ActiveUserController::class)->group(function () {
-
+    // Active user and vendor All Route
+    Route::controller(ActiveUserController::class)->group(function () {
         Route::get('/all/user', 'AllUser')->name('all-user');
         Route::get('/all/vendor', 'AllVendor')->name('all-vendor');
+    });
+
+    // Blog Category All Route
+    Route::controller(BlogController::class)->group(function () {
+
+        Route::get('/admin/blog/category', 'AllBlogCateogry')->name('admin.blog.category');
+
+        Route::get('/admin/add/blog/category', 'AddBlogCateogry')->name('add.blog.categroy');
+
+        Route::post('/admin/store/blog/category', 'StoreBlogCateogry')->name('store.blog.category');
+        Route::get('/admin/edit/blog/category/{id}', 'EditBlogCateogry')->name('edit.blog.category');
+
+        Route::post('/admin/update/blog/category', 'UpdateBlogCateogry')->name('update.blog.category');
+
+        Route::get('/admin/delete/blog/category/{id}', 'DeleteBlogCateogry')->name('delete.blog.category');
 
     });
+
+    // Blog Post All Route
+    Route::controller(BlogController::class)->group(function () {
+
+        Route::get('/admin/blog/post', 'AllBlogPost')->name('admin.blog.post');
+
+        Route::get('/admin/add/blog/post', 'AddBlogPost')->name('add.blog.post');
+
+        Route::post('/admin/store/blog/post', 'StoreBlogPost')->name('store.blog.post');
+        Route::get('/admin/edit/blog/post/{id}', 'EditBlogPost')->name('edit.blog.post');
+
+        Route::post('/admin/update/blog/post', 'UpdateBlogPost')->name('update.blog.post');
+
+        Route::get('/admin/delete/blog/post/{id}', 'DeleteBlogPost')->name('delete.blog.post');
+
+    });
+
+    // Admin Reviw All Route
+    Route::controller(ReviewController::class)->group(function () {
+
+        Route::get('/pending/review', 'PendingReview')->name('pending.review');
+        Route::get('/review/approve/{id}', 'ReviewApprove')->name('review.approve');
+        Route::get('/publish/review', 'PublishReview')->name('publish.review');
+        Route::get('/review/delete/{id}', 'ReviewDelete')->name('review.delete');
+    });
+
 
 });
 

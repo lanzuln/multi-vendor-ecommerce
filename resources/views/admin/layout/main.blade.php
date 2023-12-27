@@ -27,11 +27,12 @@
     <link rel="stylesheet" href="{{ asset('backendAdmin/assets/css/semi-dark.css') }}" />
     <link rel="stylesheet" href="{{ asset('backendAdmin/assets/css/header-colors.css') }}" />
     <link href="{{ asset('backendAdmin/assets/plugins/input-tags/css/tagsinput.css') }}" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" />
 
-    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+
     <link rel="stylesheet" href="{{ asset('backendAdmin/assets/css/custome.css') }}" />
     <title>Rukada - Responsive Bootstrap 5 Admin Template</title>
 </head>
@@ -83,7 +84,7 @@
     <script src="{{ asset('backendAdmin/assets/js/validate.min.js') }}"></script>
     <script src="{{ asset('backendAdmin/assets/plugins/input-tags/js/tagsinput.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
 
 
 
@@ -97,16 +98,25 @@
         // summernote
         $(document).ready(function() {
             $('#summernote').summernote({
-                placeholder: 'Description here',
+                placeholder: 'Hello stand alone ui',
                 tabsize: 2,
-                height: 200
+                height: 120,
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'underline', 'clear']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    ['insert', ['link', 'picture', 'video']],
+                    ['view', ['fullscreen', 'codeview', 'help']]
+                ]
             });
         });
+
 
         $(document).ready(function() {
             $('#dataTable').DataTable();
         });
-
     </script>
     @stack('myScript')
 </body>
