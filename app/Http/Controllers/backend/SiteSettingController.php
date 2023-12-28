@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\backend;
 
-use App\Http\Controllers\Controller;
+use App\Models\Seo;
 use App\Models\SiteSetting;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Intervention\Image\Facades\Image;
 
 class SiteSettingController extends Controller {
@@ -68,7 +69,7 @@ class SiteSettingController extends Controller {
     public function SeoSetting() {
 
         $seo = Seo::find(1);
-        return view('backend.seo.seo_update', compact('seo'));
+        return view('backend.pages.seo.seo_update', compact('seo'));
 
     } // End Method
 
@@ -82,12 +83,10 @@ class SiteSettingController extends Controller {
             'meta_description' => $request->meta_description,
         ]);
 
-        $notification = array(
-            'message' => 'Seo Setting Updated Successfully',
-            'alert-type' => 'success',
-        );
 
-        return redirect()->back()->with($notification);
+        toastr()->success('Seo Setting Updated Successfully');
+
+        return redirect()->back();
 
     } // End Method
 }

@@ -1,35 +1,35 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\VendorController;
-use App\Http\Controllers\user\ReviewController;
-use App\Http\Controllers\user\StripeController;
-use App\Http\Controllers\backend\BlogController;
-use App\Http\Controllers\user\AllUserController;
-use App\Http\Controllers\user\CompareController;
-use App\Http\Middleware\RedirectIfAuthenticated;
-use App\Http\Controllers\backend\BrandController;
-use App\Http\Controllers\backend\OrderController;
-use App\Http\Controllers\frontend\CartController;
-use App\Http\Controllers\frontend\FrontendVendor;
-use App\Http\Controllers\frontend\homecontroller;
-use App\Http\Controllers\user\WishlistController;
+use App\Http\Controllers\backend\ActiveUserController;
 use App\Http\Controllers\backend\BannerController;
+use App\Http\Controllers\backend\BlogController;
+use App\Http\Controllers\backend\BrandController;
+use App\Http\Controllers\backend\CategoryController;
 use App\Http\Controllers\backend\CouponController;
+use App\Http\Controllers\backend\OrderController;
+use App\Http\Controllers\backend\ProductController;
 use App\Http\Controllers\backend\ReportController;
 use App\Http\Controllers\backend\ReturnController;
-use App\Http\Controllers\backend\SliderController;
-use App\Http\Controllers\backend\ProductController;
-use App\Http\Controllers\backend\CategoryController;
-use App\Http\Controllers\frontend\CheckoutController;
-use App\Http\Controllers\backend\ActiveUserController;
+use App\Http\Controllers\backend\ShippingAreaController;
 use App\Http\Controllers\backend\SiteSettingController;
+use App\Http\Controllers\backend\SliderController;
 use App\Http\Controllers\backend\SubCategoryController;
 use App\Http\Controllers\backend\VendorOrderController;
-use App\Http\Controllers\backend\ShippingAreaController;
 use App\Http\Controllers\backend\VendorProductController;
+use App\Http\Controllers\frontend\CartController;
+use App\Http\Controllers\frontend\CheckoutController;
+use App\Http\Controllers\frontend\FrontendVendor;
+use App\Http\Controllers\frontend\homecontroller;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\user\AllUserController;
+use App\Http\Controllers\user\CompareController;
+use App\Http\Controllers\user\ReviewController;
+use App\Http\Controllers\user\StripeController;
+use App\Http\Controllers\user\WishlistController;
+use App\Http\Controllers\VendorController;
+use App\Http\Middleware\RedirectIfAuthenticated;
+use Illuminate\Support\Facades\Route;
 
 // Frontent route
 Route::controller(homecontroller::class)->group(function () {
@@ -41,6 +41,9 @@ Route::controller(homecontroller::class)->group(function () {
 
     // Product View Modal With Ajax
     Route::get('/product/view/modal/{id}', 'ProductViewAjax');
+
+    Route::post('/search', 'ProductSearch')->name('product.search');
+    Route::post('/search-product', 'SearchProduct');
 
 });
 Route::controller(CartController::class)->group(function () {
@@ -155,10 +158,10 @@ Route::middleware(['auth', 'role:user'])->group(function () {
 
     // Frontend Blog Post All Route
     Route::controller(ReviewController::class)->group(function () {
-
         Route::post('/store/review', 'StoreReview')->name('store.review');
-
     });
+
+
 });
 
 // ========= admin
@@ -387,7 +390,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::get('/seo/setting', 'SeoSetting')->name('seo.setting');
         Route::post('/seo/setting/update', 'SeoSettingUpdate')->name('seo.setting.update');
     });
-
 
 });
 
