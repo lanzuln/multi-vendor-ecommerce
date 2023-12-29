@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\RedirectResponse;
+use App\Notifications\VendorRegNotification;
+use Illuminate\Support\Facades\Notification;
 
 class VendorController extends Controller
 {
@@ -25,6 +27,7 @@ class VendorController extends Controller
     }
     public function vendorRegister(Request $request)
     {
+        $vuser = User::where('role','admin')->get();
         $request->validate([
             'shop_name' => ['required', 'string', 'max:100'],
             'user_name' => ['required', 'string', 'max:100'],
@@ -45,7 +48,7 @@ class VendorController extends Controller
             'status' => 'inactive',
         ]);
 
-
+        Notification::send($vuser, new VendorRegNotification($request));
         toastr()->success('Vendor registration successfull');
         return redirect()->route('vendor.login');
     }

@@ -1,71 +1,14 @@
 <header class="header-area header-style-1 header-height-2">
     @php
-        $allcategory = App\Models\Category::orderBy('category_name', 'asc')->get();
+        $allcategory = App\Models\Category::get();
 
-        $allcategoryDesc = App\Models\Category::orderBy('category_name', 'desc')->get();
+
     @endphp
 
     <div class="mobile-promotion">
         <span>Grand opening, <strong>up to 15%</strong> off all items. Only <strong>3 days</strong> left</span>
     </div>
-    <div class="header-top header-top-ptb-1 d-none d-lg-block">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-xl-3 col-lg-4">
-                    <div class="header-info">
-                        <ul>
 
-                            <li><a href="page-account.html">My Cart</a></li>
-                            <li><a href="shop-wishlist.html">Checkout</a></li>
-                            <li><a href="shop-order.html">Order Tracking</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-xl-6 col-lg-4">
-                    <div class="text-center">
-                        <div id="news-flash" class="d-inline-block">
-                            <ul>
-                                <li>100% Secure delivery without contacting the courier</li>
-                                <li>Supper Value Deals - Save more with coupons</li>
-                                <li>Trendy 25silver jewelry, save up 35% off today</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-4">
-                    <div class="header-info header-info-right">
-                        <ul>
-
-                            <li>
-                                <a class="language-dropdown-active" href="#">English <i
-                                        class="fi-rs-angle-small-down"></i></a>
-                                <ul class="language-dropdown">
-                                    <li>
-                                        <a href="#"><img
-                                                src="{{ asset('frontend/assets/imgs/theme/flag-fr.png') }}"
-                                                alt="" />Français</a>
-                                    </li>
-                                    <li>
-                                        <a href="#"><img
-                                                src="{{ asset('frontend/assets/imgs/theme/flag-dt.png') }}"
-                                                alt="" />Deutsch</a>
-                                    </li>
-                                    <li>
-                                        <a href="#"><img
-                                                src="{{ asset('frontend/assets/imgs/theme/flag-ru.png') }}"
-                                                alt="" />Pусский</a>
-                                    </li>
-                                </ul>
-                            </li>
-
-                            <li>Need help? Call Us: <strong class="text-brand"> + 1800 900</strong></li>
-
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     @php
         $setting = App\Models\SiteSetting::find(1);
     @endphp
@@ -125,26 +68,6 @@
                     </div>
                     <div class="header-action-right">
                         <div class="header-action-2">
-                            <div class="search-location">
-                                <form action="#">
-                                    <select class="select-active">
-                                        <option>Your Location</option>
-                                        <option>Alabama</option>
-                                        <option>Alaska</option>
-                                        <option>Arizona</option>
-                                        <option>Delaware</option>
-                                        <option>Florida</option>
-                                        <option>Georgia</option>
-                                        <option>Hawaii</option>
-                                        <option>Indiana</option>
-                                        <option>Maryland</option>
-                                        <option>Nevada</option>
-                                        <option>New Jersey</option>
-                                        <option>New Mexico</option>
-                                        <option>New York</option>
-                                    </select>
-                                </form>
-                            </div>
 
                             <div class="header-action-icon-2">
                                 <a href="{{ route('compare') }}">
@@ -268,19 +191,27 @@
                             <div class="d-flex categori-dropdown-inner">
                                 <ul>
                                     @foreach ($allcategory as $item)
-                                        <li>
-                                            <a href=""> <img src="{{ asset($item->category_image) }}"
-                                                    alt="" />{{ $item->category_name }}</a>
-                                        </li>
+                                        @if ($loop->index < 5)
+                                            <li>
+                                                <a
+                                                    href="{{ url('product/category/' . $item->id . '/' . $item->category_slug) }}">
+                                                    <img src="{{ asset($item->category_image) }}" alt="" />
+                                                    {{ $item->category_name }} </a>
+                                            </li>
+                                        @endif
                                     @endforeach
 
                                 </ul>
                                 <ul class="end">
-                                    @foreach ($allcategoryDesc as $item)
-                                        <li>
-                                            <a href=""> <img src="{{ asset($item->category_image) }}"
-                                                    alt="" />{{ $item->category_name }}</a>
-                                        </li>
+                                    @foreach ($allcategory as $item)
+                                    @if ($loop->index > 4)
+                                            <li>
+                                                <a
+                                                    href="{{ url('product/category/' . $item->id . '/' . $item->category_slug) }}">
+                                                    <img src="{{ asset($item->category_image) }}" alt="" />
+                                                    {{ $item->category_name }} </a>
+                                            </li>
+                                        @endif
                                     @endforeach
                                 </ul>
                             </div>

@@ -11,6 +11,7 @@ use App\Http\Controllers\backend\OrderController;
 use App\Http\Controllers\backend\ProductController;
 use App\Http\Controllers\backend\ReportController;
 use App\Http\Controllers\backend\ReturnController;
+use App\Http\Controllers\backend\RoleController;
 use App\Http\Controllers\backend\ShippingAreaController;
 use App\Http\Controllers\backend\SiteSettingController;
 use App\Http\Controllers\backend\SliderController;
@@ -161,7 +162,6 @@ Route::middleware(['auth', 'role:user'])->group(function () {
         Route::post('/store/review', 'StoreReview')->name('store.review');
     });
 
-
 });
 
 // ========= admin
@@ -233,6 +233,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::get('/product/multiimg/delete/{id}', 'MulitImageDelelte')->name('product.multiimg.delete');
         Route::get('/product/inactive/{id}', 'productInactive')->name('product.inactive');
         Route::get('/product/active/{id}', 'productActive')->name('product.active');
+
+        // For Product Stock
+        Route::get('/product/stock', 'ProductStock')->name('product.stock');
 
     });
 
@@ -389,6 +392,60 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
         Route::get('/seo/setting', 'SeoSetting')->name('seo.setting');
         Route::post('/seo/setting/update', 'SeoSettingUpdate')->name('seo.setting.update');
+    });
+
+    Route::controller(RoleController::class)->group(function () {
+
+        // ==========permission
+        Route::get('/all/permission', 'AllPermission')->name('all.permission');
+        Route::get('/add/permission', 'AddPermission')->name('add.permission');
+        Route::post('/store/permission', 'StorePermission')->name('store.permission');
+        Route::get('/edit/permission/{id}', 'EditPermission')->name('edit.permission');
+
+        Route::post('/update/permission', 'UpdatePermission')->name('update.permission');
+
+        Route::get('/delete/permission/{id}', 'DeletePermission')->name('delete.permission');
+
+        // ==========Roles All Route
+
+        Route::get('/all/roles', 'AllRoles')->name('all.roles');
+        Route::get('/add/roles', 'AddRoles')->name('add.roles');
+        Route::post('/store/roles', 'StoreRoles')->name('store.roles');
+        Route::get('/edit/roles/{id}', 'EditRoles')->name('edit.roles');
+
+        Route::post('/update/roles', 'UpdateRoles')->name('update.roles');
+
+        Route::get('/delete/roles/{id}', 'DeleteRoles')->name('delete.roles');
+
+
+        // ============add role permission
+
+        Route::get('/add/roles/permission', 'AddRolesPermission')->name('add.roles.permission');
+
+        Route::post('/role/permission/store', 'RolePermissionStore')->name('role.permission.store');
+
+        Route::get('/all/roles/permission', 'AllRolesPermission')->name('all.roles.permission');
+
+        Route::get('/admin/edit/roles/{id}', 'AdminRolesEdit')->name('admin.edit.roles');
+
+        Route::post('/admin/roles/update/{id}', 'AdminRolesUpdate')->name('admin.roles.update');
+
+        Route::get('/admin/delete/roles/{id}', 'AdminRolesDelete')->name('admin.delete.roles');
+
+    });
+
+// Admin User All Route
+    Route::controller(AdminController::class)->group(function () {
+
+        Route::get('/all/admin', 'AllAdmin')->name('all.admin');
+        Route::get('/add/admin', 'AddAdmin')->name('add.admin');
+        Route::post('/admin/user/store', 'AdminUserStore')->name('admin.user.store');
+
+        Route::get('/edit/admin/role/{id}', 'EditAdminRole')->name('edit.admin.role');
+
+        Route::post('/admin/user/update/{id}', 'AdminUserUpdate')->name('admin.user.update');
+        Route::get('/delete/admin/role/{id}', 'DeleteAdminRole')->name('delete.admin.role');
+
     });
 
 });

@@ -3,22 +3,27 @@
 namespace App\Http\Controllers\user;
 
 use Carbon\Carbon;
+use App\Models\User;
 use App\Models\Order;
 use App\Mail\OrderMail;
 use App\Models\OrderItem;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Notifications\OrderComplete;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Gloudemans\Shoppingcart\Facades\Cart;
+use Illuminate\Support\Facades\Notification;
 
 class StripeController extends Controller {
     public function StripeOrder(Request $request) {
+        $user = User::where('role', 'admin')->get();
+
         if (Session::has('coupon')) {
             $total_amount = Session::get('coupon')['total_amount'];
         } else {
-            $total_amount = round(Cart::subtotal());
+            $total_amount = round(floatval(Cart::subtotal()));
         }
 
         \Stripe\Stripe::setApiKey('sk_test_51ILVuBFw2tOvYBP8R1KqaXXPA5VCrnOAIpN7asNTtDDt38H6LO9YvujalrPfghF89wH8D1LBPM5SstduqaK7yJEC005UqOAetw');
@@ -83,20 +88,20 @@ class StripeController extends Controller {
 
         Cart::destroy();
 
+        Notification::send($user, new OrderComplete($request->name));
         toastr()->success('Your Order Place Successfully');
         return redirect()->route('dashboard');
 
     }
 
+    public function CashOrder(Request $request) {
+        $user = User::where('role', 'admin')->get();
 
-    public function CashOrder(Request $request){
-
-        if(Session::has('coupon')){
+        if (Session::has('coupon')) {
             $total_amount = Session::get('coupon')['total_amount'];
-        }else{
-            $total_amount = round(Cart::subtotal());
+        } else {
+            $total_amount = round(floatval(Cart::subtotal()));
         }
-
 
         $order_id = Order::insertGetId([
             'user_id' => Auth::id(),
@@ -116,8 +121,7 @@ class StripeController extends Controller {
             'currency' => 'Usd',
             'amount' => $total_amount,
 
-
-            'invoice_no' => 'EOS'.mt_rand(10000000,99999999),
+            'invoice_no' => 'EOS' . mt_rand(10000000, 99999999),
             'order_date' => Carbon::now()->format('d F Y'),
             'order_month' => Carbon::now()->format('F'),
             'order_year' => Carbon::now()->format('Y'),
@@ -125,24 +129,24 @@ class StripeController extends Controller {
             'created_at' => Carbon::now(),
 
         ]);
-           // Start Send Email
+        // Start Send Email
 
-           $invoice = Order::findOrFail($order_id);
+        $invoice = Order::findOrFail($order_id);
 
-           $data = [
+        $data = [
 
-               'invoice_no' => $invoice->invoice_no,
-               'amount' => $total_amount,
-               'name' => $invoice->name,
-               'email' => $invoice->email,
+            'invoice_no' => $invoice->invoice_no,
+            'amount' => $total_amount,
+            'name' => $invoice->name,
+            'email' => $invoice->email,
 
-           ];
+        ];
 
-           // End Send Email
-           Mail::to($request->email)->send(new OrderMail($data));
+        // End Send Email
+        Mail::to($request->email)->send(new OrderMail($data));
 
         $carts = Cart::content();
-        foreach($carts as $cart){
+        foreach ($carts as $cart) {
 
             OrderItem::insert([
                 'order_id' => $order_id,
@@ -152,22 +156,20 @@ class StripeController extends Controller {
                 'size' => $cart->options->size,
                 'qty' => $cart->qty,
                 'price' => $cart->price,
-                'created_at' =>Carbon::now(),
+                'created_at' => Carbon::now(),
 
             ]);
 
         } // End Foreach
 
         if (Session::has('coupon')) {
-           Session::forget('coupon');
+            Session::forget('coupon');
         }
 
         Cart::destroy();
-
+        Notification::send($user, new OrderComplete($request->name));
         toastr()->success('Your Order Place Successfully');
         return redirect()->route('dashboard');
 
-
-
-    }// End Method
+    } // End Method
 }
