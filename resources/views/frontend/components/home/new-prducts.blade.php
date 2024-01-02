@@ -32,7 +32,7 @@
                                 data-wow-delay=".1s">
                                 <div class="product-img-action-wrap">
                                     <div class="product-img product-img-zoom">
-                                        <a href="{{ url('/produt/details/' . $item->id . '/' . $item->product_slug) }}">
+                                        <a href="javascript:;">
                                             <img class="default-img" src="{{ asset($item->product_thambnail) }}"
                                                 alt="" />
                                             <img class="hover-img" src="{{ asset($item->product_thambnail) }}"
@@ -153,7 +153,7 @@
                                     <div class="product-img-action-wrap">
                                         <div class="product-img product-img-zoom">
                                             <a
-                                                href="{{ url('/produt/details/' . $c_t_product->id . '/' . $c_t_product->product_slug) }}">
+                                                href="javascript:;">
                                                 <img class="default-img"
                                                     src="{{ asset($c_t_product->product_thambnail) }}"
                                                     alt="" />

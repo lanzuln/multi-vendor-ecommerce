@@ -115,6 +115,7 @@ Stripe Payment
                 <div class="border p-40 cart-totals ml-30 mb-50">
                     <div class="d-flex align-items-end justify-content-between mb-30">
                         <h4>Make Payment </h4>
+                        <p>For demo perposes use it as cart number <b>4242 4242 4242 4242.</b></p>
 
                     </div>
                     <div class="divider-2 mb-30"></div>

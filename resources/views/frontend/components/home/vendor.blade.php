@@ -1,5 +1,5 @@
 @php
-$vendors = App\Models\User::where('status','active')->where('role','vendor')->orderBy('id','DESC')->limit(4)->get();
+$vendors = App\Models\User::where('status','active')->where('role','vendor')->orderBy('id','ASC')->limit(4)->get();
 @endphp
 
 <div class="container">

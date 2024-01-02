@@ -2,7 +2,6 @@
     @php
         $allcategory = App\Models\Category::get();
 
-
     @endphp
 
     <div class="mobile-promotion">
@@ -16,7 +15,7 @@
         <div class="container">
             <div class="header-wrap">
                 <div class="logo logo-width-1">
-                    <a href="index.html"><img src="{{ asset($setting->logo) }}" alt="logo" /></a>
+                    <a href="{{ route('homePage') }}"><img src="{{ asset($setting->logo) }}" alt="logo" /></a>
                 </div>
                 <div class="header-right">
                     <div class="search-style-2">
@@ -48,19 +47,6 @@
 
                         <form action="{{ route('product.search') }}" method="post">
                             @csrf
-                            <select class="select-active">
-                                <option>All Categories</option>
-                                <option>Milks and Dairies</option>
-                                <option>Wines & Alcohol</option>
-                                <option>Clothing & Beauty</option>
-                                <option>Pet Foods & Toy</option>
-                                <option>Fast food</option>
-                                <option>Baking material</option>
-                                <option>Vegetables</option>
-                                <option>Fresh Seafood</option>
-                                <option>Noodles & Rice</option>
-                                <option>Ice cream</option>
-                            </select>
                             <input onfocus="search_result_show()" onblur="search_result_hide()" name="search"
                                 id="search" placeholder="Search for items..." />
                             <div id="searchProducts"></div>
@@ -103,14 +89,14 @@
                                 <a href="{{ route('mycart') }}"><span class="lable">Cart</span></a>
                                 <div class="cart-dropdown-wrap cart-dropdown-hm2">
                                     <ul>
-                                        <div id="miniCart">
+                                        <div class="miniCart">
 
                                         </div>
                                     </ul>
                                     <div class="shopping-cart-footer">
                                         <div class="shopping-cart-total">
 
-                                            <h4>Total <span id="cartSubTotal"> </span></h4>
+                                            <h4>Total <span class="cartSubTotal"> </span></h4>
                                         </div>
                                         <div class="shopping-cart-button">
                                             <a href="{{ route('mycart') }}" class="outline">View cart</a>
@@ -178,8 +164,9 @@
         <div class="container">
             <div class="header-wrap header-space-between position-relative">
                 <div class="logo logo-width-1 d-block d-lg-none">
-                    <a href="index.html"><img src="{{ asset('frontend/assets/imgs/theme/logo.svg') }}"
-                            alt="logo" /></a>
+                    <a href="{{ route('homePage') }}">
+                        <img src="{{ asset($setting->logo) }}" alt="logo" />
+                    </a>
                 </div>
                 <div class="header-nav d-none d-lg-flex">
                     <div class="main-categori-wrap d-none d-lg-block">
@@ -204,7 +191,7 @@
                                 </ul>
                                 <ul class="end">
                                     @foreach ($allcategory as $item)
-                                    @if ($loop->index > 4)
+                                        @if ($loop->index > 4)
                                             <li>
                                                 <a
                                                     href="{{ url('product/category/' . $item->id . '/' . $item->category_slug) }}">
@@ -215,36 +202,7 @@
                                     @endforeach
                                 </ul>
                             </div>
-                            <div class="more_slide_open" style="display: none">
-                                <div class="d-flex categori-dropdown-inner">
-                                    <ul>
-                                        <li>
-                                            <a href="shop-grid-right.html"> <img
-                                                    src="{{ asset('frontend/assets/imgs/theme/icons/icon-1.svg') }}"
-                                                    alt="" />Milks and Dairies</a>
-                                        </li>
-                                        <li>
-                                            <a href="shop-grid-right.html"> <img
-                                                    src="{{ asset('frontend/assets/imgs/theme/icons/icon-2.svg') }}"
-                                                    alt="" />Clothing & beauty</a>
-                                        </li>
-                                    </ul>
-                                    <ul class="end">
-                                        <li>
-                                            <a href="shop-grid-right.html"> <img
-                                                    src="{{ asset('frontend/assets/imgs/theme/icons/icon-3.svg') }}"
-                                                    alt="" />Wines & Drinks</a>
-                                        </li>
-                                        <li>
-                                            <a href="shop-grid-right.html"> <img
-                                                    src="{{ asset('frontend/assets/imgs/theme/icons/icon-4.svg') }}"
-                                                    alt="" />Fresh Seafood</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="more_categories"><span class="icon"></span> <span class="heading-sm-1">Show
-                                    more...</span></div>
+
                         </div>
                     </div>
                     <div class="main-menu main-menu-padding-1 main-menu-lh-2 d-none d-lg-block font-heading">
@@ -299,7 +257,7 @@
 
                 <div class="hotline d-none d-lg-flex">
                     <img src="{{ asset('frontend/assets/imgs/theme/icons/icon-headphone.svg') }}" alt="hotline" />
-                    <p>1900 - 888<span>24/7 Support Center</span></p>
+                    <p>{{ $setting->support_phone }}</p>
                 </div>
                 <div class="header-action-icon-2 d-block d-lg-none">
                     <div class="burger-icon burger-icon-white">
@@ -311,32 +269,37 @@
                 <div class="header-action-right d-block d-lg-none">
                     <div class="header-action-2">
                         <div class="header-action-icon-2">
-                            <a href="shop-wishlist.html">
+                            <a href="{{ route('wishlist') }}">
                                 <img alt="Nest"
                                     src="{{ asset('frontend/assets/imgs/theme/icons/icon-heart.svg') }}" />
-                                <span class="pro-count white">4</span>
+                                @auth
+                                    <span class="pro-count white" id="MwishQty">0</span>
+                                @endauth
                             </a>
                         </div>
                         <div class="header-action-icon-2">
                             <a class="mini-cart-icon" href="#">
                                 <img alt="Nest"
-                                    src="{{ asset('frontend/assets/imgs/theme/icons/icon-cart.svg') }}" />
-                                <span class="pro-count white">2</span>
+                                    src="{{ asset('frontend/assets/imgs/theme/icons/icon-cart.svg')}}" />
+
+                                    <span class="pro-count white" id="McartQty">0</span>
+
                             </a>
                             <div class="cart-dropdown-wrap cart-dropdown-hm2">
 
-                                {{-- <div id="miniCart"> --}}
+                                <div class="miniCart">
                                 {{-- mini card show here  --}}
-                                {{-- </div> --}}
+                                </div>
 
 
 
                                 <div class="shopping-cart-footer">
                                     <div class="shopping-cart-total">
-                                        <h4>Total <span>$383.00</span></h4>
+
+                                        <h4>Total <span class="cartSubTotal"> </span></h4>
                                     </div>
                                     <div class="shopping-cart-button">
-                                        <a href="shop-cart.html">View cart</a>
+                                        <a href="{{ route('mycart') }}" class="outline">View cart</a>
                                         <a href="shop-checkout.html">Checkout</a>
                                     </div>
                                 </div>

@@ -237,8 +237,9 @@
                 url: '/product/mini/cart',
                 dataType: 'json',
                 success: function(response) {
-                    $('#cartSubTotal').text(response.cartTotal);
+                    $('.cartSubTotal').text(response.cartTotal);
                     $('#cartQty').text(response.cartQty);
+                    $('#McartQty').text(response.cartQty);
                     var miniCart = ""
 
                     $.each(response.carts, function(key, value) {
@@ -246,11 +247,11 @@
 
                                     <li>
                                         <div class="shopping-cart-img">
-                                            <a href="shop-product-right.html"><img alt="Nest"
+                                            <a href=""><img alt="Nest"
                                                     src="${value.options.image}" /></a>
                                         </div>
                                         <div class="shopping-cart-title">
-                                            <h4><a href="shop-product-right.html">${value.name}</a></h4>
+                                            <h4><a href="">${value.name}</a></h4>
                                             <h3><span>${value.qty} × </span>${value.price}</h3>
                                         </div>
                                         <div class="shopping-cart-delete">
@@ -259,7 +260,7 @@
                                     </li>
                         `
                     })
-                    $('#miniCart').html(miniCart);
+                    $('.miniCart').html(miniCart);
                 }
             })
         }
@@ -397,6 +398,8 @@
                 url: "/get-wishlist-product/",
                 success: function(response) {
                     $('#wishQty').text(response.wishQty);
+                    $('#MwishQty').text(response.wishQty);
+
                     var rows = ""
                     $.each(response.wishlist, function(key, value) {
 

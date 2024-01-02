@@ -32,7 +32,7 @@
                                         <div class="product-img-action-wrap">
                                             <div class="product-img product-img-zoom">
                                                 <a
-                                                    href="{{ url('/produt/details/' . $item->id . '/' . $item->product_slug) }}">
+                                                    href="javascript:;">
                                                     <img class="default-img" src="{{ asset($item->product_thambnail) }}"
                                                         alt="" />
                                                     <img class="hover-img" src="{{ asset($item->product_thambnail) }}"

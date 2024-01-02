@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Order;
 use App\Mail\OrderMail;
+use App\Jobs\OrderEmail;
 use App\Models\OrderItem;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -139,11 +140,14 @@ class StripeController extends Controller {
             'amount' => $total_amount,
             'name' => $invoice->name,
             'email' => $invoice->email,
+            'user_email'=>$request->email
 
         ];
 
         // End Send Email
-        Mail::to($request->email)->send(new OrderMail($data));
+
+
+        dispatch(new OrderEmail($data));
 
         $carts = Cart::content();
         foreach ($carts as $cart) {
